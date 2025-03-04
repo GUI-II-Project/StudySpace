@@ -6,8 +6,11 @@ function LandingPage() {
   <div>
     <NavBar />
     <div style={{ marginTop: '50px' }}>
-        <h1>Study Space</h1>
-        <p>Get into flow state.</p>
+        <h1 style={{ paddingBottom: '10px' }}>Study Space</h1>
+        <h4 style={{ paddingBottom: '20px' }}>Get into flow state.</h4>
+        <button type="button" class="btn btn-dark">Get started</button>
+
+        <p style={{ paddingTop: '40px' }}>✨ One workspace for all your study needs ✨</p>
     </div>
   </div>
   );
