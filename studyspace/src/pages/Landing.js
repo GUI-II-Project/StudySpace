@@ -19,7 +19,7 @@ function LandingPage() {
       <img style={{ maxHeight: '500px' }} class="img-fluid" src={main_page} alt="main_page"/>
     </div>
     
-    <div style={{ marginTop: '8rem', marginLeft: '8rem', marginRight: '8rem' }} class="row justify-content-left">
+    <div id="about" style={{ marginTop: '8rem', marginLeft: '8rem', marginRight: '8rem' }} class="row justify-content-left">
       <div class="col-6 text-start">
         <h4 style={{ paddingBottom: '5px', fontWeight: 'bold' }}>Getting into flow state is hard.</h4>
         <h5 class="text-muted" style={{ paddingBottom: '5px' }}>And one key barrier? Scattered study tools.</h5>
@@ -45,7 +45,7 @@ function LandingPage() {
       <div class="col-5"></div>
     </div>
 
-    <div style={{ marginTop: '2rem', marginBottom: '6rem', marginLeft: '8rem', marginRight: '8rem' }} class="row justify-content-left text-start row-gap-4">
+    <div id="features" style={{ marginTop: '2rem', marginBottom: '6rem', marginLeft: '8rem', marginRight: '8rem' }} class="row justify-content-left text-start row-gap-4">
       <div class="col-4">
         <h5 style={{ fontWeight: 'bold' }}>✏️ Take notes</h5>
         <p style={{ paddingTop: '5px' }}>Jot down and save your greatest ideas and thoughts in the notes tab.</p>

@@ -12,10 +12,10 @@ class NavBar extends React.Component {
             </a>
             <ul class="navbar-nav">
               <li class="nav-item active">
-                <a class="nav-link" href="#">About</a>
+                <a class="nav-link" href="#about">About</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Features</a>
+                <a class="nav-link" href="#features">Features</a>
               </li>
             </ul>
           </div>
