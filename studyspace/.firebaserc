@@ -1,5 +1,6 @@
 {
   "projects": {
     "default": "gui-ii-studyspace"
-  }
+  },
+  "debug": false
 }
