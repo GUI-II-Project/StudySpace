@@ -18,10 +18,10 @@ function LandingPage() {
       <img src={main_page} alt="main_page" height="500"/>
     </div>
     
-    <div style={{ marginTop: '120px', marginBottom: '80px' }} class="row justify-content-center">
+    <div style={{ marginTop: '120px' }} class="row justify-content-center">
       <div class="col-5 text-start">
-        <h4>Getting into flow state is hard.</h4>
-        <h4 class="text-muted">And one key barrier? Scattered study tools.</h4>
+        <h4 style={{ paddingBottom: '5px' }}>Getting into flow state is hard.</h4>
+        <h5 class="text-muted">And one key barrier? Scattered study tools.</h5>
         <p style={{ paddingTop: '10px' }}>Imagine being so immersed in your studies that the perception of time fades away, 
           distractions magically disappear, and learning feels practically effortless. This is 
           the flow state, a powerful cognitive mode of complete focus and clarity.</p>
@@ -34,6 +34,14 @@ function LandingPage() {
       <div class="col-5">
         <img src={logo_with_clouds} alt="logo_with_clouds" height="350"/>
       </div>
+    </div>
+
+    <div style={{ marginTop: '120px', marginBottom: '80px' }} class="row justify-content-center">
+      <div class="col-5 text-start">
+        <h4 style={{ paddingBottom: '5px' }}>No more scattered tools. No more wasted time.</h4>
+        <h5 class="text-muted">Just one platform to help you stay organized and focused.</h5>
+      </div>
+      <div class="col-5"></div>
     </div>
     
   </div>
