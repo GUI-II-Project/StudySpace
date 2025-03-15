@@ -6,7 +6,7 @@ class NavBar extends React.Component {
     return(
       <div>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-          <div class="container-fluid">
+          <div class="container-fluid" style={{ marginLeft: '1rem', marginRight: '1rem' }}>
             <a class="navbar-brand" href="#">
               <img src={logo} alt="logo" width="30" height="30"/>
             </a>

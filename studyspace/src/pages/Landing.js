@@ -7,7 +7,7 @@ function LandingPage() {
   return (
   <div>
     <NavBar />
-    
+
     <div style={{ marginTop: '4rem'}}>
         <h1 style={{ paddingBottom: '1rem', fontSize: '4rem', fontWeight: 'bold' }}>Study Space</h1>
         <h4 style={{ paddingBottom: '2rem', fontSize: '2rem', }}>Get into flow state.</h4>
@@ -45,7 +45,7 @@ function LandingPage() {
       <div class="col-5"></div>
     </div>
 
-    <div style={{ marginTop: '2rem', marginBottom: '4rem', marginLeft: '8rem', marginRight: '8rem' }} class="row justify-content-left text-start row-gap-4">
+    <div style={{ marginTop: '2rem', marginBottom: '6rem', marginLeft: '8rem', marginRight: '8rem' }} class="row justify-content-left text-start row-gap-4">
       <div class="col-4">
         <h5 style={{ fontWeight: 'bold' }}>✏️ Take notes</h5>
         <p style={{ paddingTop: '5px' }}>Jot down and save your greatest ideas and thoughts in the notes tab.</p>
@@ -72,6 +72,13 @@ function LandingPage() {
      </div>
     </div>
 
+    <footer class="bg-light pt-2 pb-2">
+      <div class="container">
+        <div class="text-center mt-3">
+          <p>Study Space 2025. Created by Michelle, Sunny, David, Nik, and Lucas.</p>
+        </div>
+      </div>
+    </footer>
   </div>
   );
 }
