@@ -1,1 +1,11 @@
-{}
+{
+  "dependencies": {
+    "lint": "^0.8.19"
+  },
+  "devDependencies": {
+    "eslint": "^9.22.0",
+    "eslint-config-prettier": "^10.1.1",
+    "eslint-plugin-prettier": "^5.2.3",
+    "prettier": "^3.5.3"
+  }
+}
