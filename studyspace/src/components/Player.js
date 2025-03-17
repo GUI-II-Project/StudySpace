@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import ReactPlayer from "react-player";
 
 /* https://www.youtube.com/watch?v=VGSFKeGFWEA -> Youtube video for testing*/
