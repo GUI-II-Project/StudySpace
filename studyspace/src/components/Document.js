@@ -47,7 +47,7 @@ class Document extends React.Component {
         return (
             <div
                 contentEditable="true"
-                className="document"
+                className="editor"
                 ref={this.props.documentRef}
                 suppressContentEditableWarning={true}
             ></div>
