@@ -19,7 +19,7 @@ body {
     border-radius: 10px;
 }
 
-.format-buttons button {
+.format-buttons .tool {
     display: flex;
     justify-content: center;
     padding: 0;
@@ -36,8 +36,15 @@ body {
     background-color: #8d8d8d;
 }
 
-.format-buttons button:active {
+.format-buttons .tool:active {
     transform: translateY(2px);
+}
+
+.tool.active{background-color: #8d8d8d;}
+
+.tab-space {
+    display: inline-block;
+    width:4em;
 }
 
 .format-buttons input {
@@ -73,6 +80,29 @@ body {
 #size input {
     width: 30px;
     height: 30px;
+}
+
+.dropdown-menu {
+    background-color: #A0A0A0;
+    border: 1px solid black;
+}
+
+.dropdown-menu li {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 25px;
+    margin: 0 auto;
+    padding: 0;
+    border-radius: 3px;
+}
+
+.dropdown-item {
+    display: flex;
+    justify-content: center;
+    padding: 0;
+    width: 95%;
+    border-radius: 3px;
 }
 
 .editor {
