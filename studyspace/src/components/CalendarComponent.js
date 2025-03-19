@@ -55,7 +55,9 @@ const Calendar = () => {
   return (
     <div>
       <div style={{ marginTop: "4rem", textAlign: "center" }}>
-        <h1 style={{ fontSize: "3rem", fontWeight: "bold", color: "white" }}>Your Calendar</h1>
+        <h1 style={{ fontSize: "3rem", fontWeight: "bold", color: "white" }}>
+          Your Calendar
+        </h1>
         <p style={{ fontSize: "1.2rem", color: "gray" }}>
           View and manage your study schedule with ease.
         </p>
