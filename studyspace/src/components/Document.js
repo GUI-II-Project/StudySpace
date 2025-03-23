@@ -10,6 +10,11 @@ class Document extends React.Component {
         "keydown",
         this.handleKeyDown,
       );
+
+      // Set the default font size to "medium" (numeric value 4)
+      this.props.documentRef.current.focus();
+      document.execCommand("fontSize", false, "3");
+      document.execCommand("fontName", false, "Inter");
     }
   }
   // runs righ before the component is removed from the DOM
@@ -54,6 +59,7 @@ class Document extends React.Component {
         contentEditable="true"
         className="editor"
         ref={this.props.documentRef}
+        style={{fontFamily: this.props.selectedFont}}
         suppressContentEditableWarning={true}
       ></div>
     );
