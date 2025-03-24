@@ -1,14 +1,14 @@
-import React from "react";;
-import NavBar from "../components/NavBar";;
+import React from "react";
+import NavBar from "../components/NavBar";
 import PomodoroTimer from '../components/PomodoroTimer';
-import logo_with_clouds from "../imgs/logo_with_clouds.png";;
+import logo_with_clouds from "../imgs/logo_with_clouds.png";
 import main_page from "../imgs/main_page.png";
 
 const landingStyle = {
   backgroundColor: "white",
   minHeight: "100vh",
   width: "100%",
-};;
+};
 
 function LandingPage() {
   return (
