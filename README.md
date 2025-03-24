@@ -8,3 +8,6 @@ But getting into flow state is hard. And one key barrier? Scattered study tools.
 Study Space solves this problem.
 
 Project for GUI II by Michelle, Sunny, David, Nik, and Lucas.
+
+## Resources
+Background image from https://wallhaven.cc/w/kxk7km

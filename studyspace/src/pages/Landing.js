@@ -1,19 +1,13 @@
 import React from "react";
-import NavBar from "../components/NavBar";
+import LandingNavBar from "../components/LandingNavBar";
 import logo_with_clouds from "../imgs/logo_with_clouds.png";
 import main_page from "../imgs/main_page.png";
-
-const landingStyle = {
-  backgroundColor: "white",
-  minHeight: "100vh",
-  width: "100%",
-};
+import { Link } from "react-router-dom";
 
 function LandingPage() {
   return (
-    <div style={landingStyle}>
-      <NavBar />
-
+    <div style={{ backgroundColor: "white", width: "100%" }}>
+      <LandingNavBar />
       <div style={{ marginTop: "4rem" }}>
         <h1
           style={{
@@ -28,7 +22,9 @@ function LandingPage() {
           Get into flow state.
         </h4>
         <button type="button" className="btn btn-dark">
-          Get started
+          <Link className="nav-link" to="/home">
+            Get started
+          </Link>
         </button>
         <h5 style={{ paddingTop: "7rem" }}>
           ✨ One workspace for all your study needs ✨
