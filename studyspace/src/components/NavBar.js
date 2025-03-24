@@ -5,7 +5,7 @@ import logo from "../imgs/logo.png";
 class NavBar extends React.Component {
   render() {
     return (
-      <div style={{ backgroundColor: "#0D1732"}}>
+      <div style={{ backgroundColor: "#0D1732" }}>
         <nav className="navbar navbar-expand-lg navbar-light">
           <div
             className="container-fluid"

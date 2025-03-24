@@ -6,8 +6,8 @@ import { Link } from "react-router-dom";
 
 function LandingPage() {
   return (
-  <div style={{ backgroundColor: "white", width: "100%" }}>
-    <LandingNavBar />
+    <div style={{ backgroundColor: "white", width: "100%" }}>
+      <LandingNavBar />
       <div style={{ marginTop: "4rem" }}>
         <h1
           style={{
