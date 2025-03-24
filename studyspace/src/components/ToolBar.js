@@ -20,12 +20,12 @@ class ToolBar extends React.Component {
       <div className="format-bar d-flex align-items-center justify-content-center">
         <div className="format-buttons m-0 px-2 d-flex align-items-center justify-content-center">
           <button
-            class="tool"
+            className="tool"
             type="button"
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
-            <i class="bi bi-plus-circle"></i>
+            <i className="bi bi-plus-circle"></i>
           </button>
           <ul className="dropdown-menu">
             <li>
@@ -34,22 +34,22 @@ class ToolBar extends React.Component {
               </button>
             </li>
           </ul>
-          <button class="tool">
-            <i class="bi bi-download"></i>
+          <button class="tool" onClick={this.props.downloadDocx}>
+            <i className="bi bi-download"></i>
           </button>
           <button
-            class="tool"
+            className="tool"
             onClick={() => onFormat("undo")}
             onMouseDown={(e) => e.preventDefault()}
           >
-            <i class="bi bi-arrow-counterclockwise"></i>
+            <i className="bi bi-arrow-counterclockwise"></i>
           </button>
           <button
-            class="tool"
+            className="tool"
             onClick={() => onFormat("redo")}
             onMouseDown={(e) => e.preventDefault()}
           >
-            <i class="bi bi-arrow-clockwise"></i>
+            <i className="bi bi-arrow-clockwise"></i>
           </button>
           <select 
             value={this.props.selectedFont}
@@ -66,21 +66,21 @@ class ToolBar extends React.Component {
             onClick={() => onFormat("bold")}
             onMouseDown={(e) => e.preventDefault()}
           >
-            <i class="bi bi-type-bold"></i>
+            <i className="bi bi-type-bold"></i>
           </button>
           <button
             className={`tool ${activeFormats.italic ? "active" : ""}`}
             onClick={() => onFormat("italic")}
             onMouseDown={(e) => e.preventDefault()}
           >
-            <i class="bi bi-type-italic"></i>
+            <i className="bi bi-type-italic"></i>
           </button>
           <button
             className={`tool ${activeFormats.underline ? "active" : ""}`}
             onClick={() => onFormat("underline")}
             onMouseDown={(e) => e.preventDefault()}
           >
-            <i class="bi bi-type-underline"></i>
+            <i className="bi bi-type-underline"></i>
           </button>
           <input
             type="color"
@@ -90,8 +90,8 @@ class ToolBar extends React.Component {
             title="Change font color"
           />
           <div id="size">
-            <button class="tool" onClick={this.handleDecreaseFont}> 
-              <i class="bi bi-dash"></i>
+            <button className="tool" onClick={this.handleDecreaseFont}> 
+              <i className="bi bi-dash"></i>
             </button>
             <select onChange={(e) => onFontSizeChange(e.target.value)} value={fontSize}>
               <option value="1">xxsmall</option>
@@ -102,44 +102,44 @@ class ToolBar extends React.Component {
               <option value="6">xlarge</option>
               <option value="7">xxlarge</option>
             </select>
-            <button class="tool" onClick={this.handleIncreaseFont}>
-              <i class="bi bi-plus"></i>
+            <button className="tool" onClick={this.handleIncreaseFont}>
+              <i className="bi bi-plus"></i>
             </button>
           </div>
           <button
-            class="tool"
+            className="tool"
             onClick={() => onFormat("justifyLeft")}
             onMouseDown={(e) => e.preventDefault()}
           >
-            <i class="bi bi-text-left"></i>
+            <i className="bi bi-text-left"></i>
           </button>
           <button
-            class="tool"
+            className="tool"
             onClick={() => onFormat("justifyCenter")}
             onMouseDown={(e) => e.preventDefault()}
           >
-            <i class="bi bi-text-center"></i>
+            <i className="bi bi-text-center"></i>
           </button>
           <button
-            class="tool"
+            className="tool"
             onClick={() => onFormat("justifyRight")}
             onMouseDown={(e) => e.preventDefault()}
           >
-            <i class="bi bi-text-right"></i>
+            <i className="bi bi-text-right"></i>
           </button>
           <button
-            class="tool"
+            className="tool"
             onClick={() => onFormat("insertUnorderedList")}
             onMouseDown={(e) => e.preventDefault()}
           >
-            <i class="bi bi-list-ul"></i>
+            <i className="bi bi-list-ul"></i>
           </button>
           <button
-            class="tool"
+            className="tool"
             onClick={() => onFormat("insertOrderedList")}
             onMouseDown={(e) => e.preventDefault()}
           >
-            <i class="bi bi-list-ol"></i>
+            <i className="bi bi-list-ol"></i>
           </button>
         </div>
       </div>

@@ -109,7 +109,7 @@ input[type="color"].circular::-webkit-color-swatch {
     border-radius: 6px;
     text-align: left;
     padding: 40px;
-    font-family: 'Inter', sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 select {
