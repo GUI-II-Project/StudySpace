@@ -1,0 +1,123 @@
+/* the container of the list */
+.task-list-container {
+  background-color: rgba(33, 43, 88, 0.9);
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 1000px;
+  min-height: 500px;
+  font-family: Inter;
+}
+
+/* the header */
+.task-list-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* the "tasks" title on the top left*/
+.task-list-header h2 {
+  margin-left: 15px;
+  font-size: 24px;
+  text-decoration: underline;
+}
+
+/* the date on the top right */
+.task-list-header span {
+  font-size: 20px;
+  padding-right: 5px;
+}
+
+/* task line */
+.add-task {
+  display: flex;
+  align-items: center;
+  margin: 15px;
+  margin-left: 10px;
+}
+
+/* The "+" icon */
+.add-task-icon {
+  color: #80FF00;
+  font-size: 20px;
+}
+
+/* Add task input */
+.add-task input {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 16px;
+  outline: none;
+}
+
+/* Keeps tasks to the left of the component */
+.task-list {
+  padding: 0;
+}
+
+ /* each individual task line */
+.task-item {
+  background: rgba(68, 89, 185, 0.1);
+  border-style: solid;
+  border-radius: 10px;
+  border-color: rgba(68, 89, 185, 0);
+  margin-bottom: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 10px;
+  //border-bottom: 2px solid #2a3b5a;
+}
+
+.task-content input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+/* cross through a task when it is checked off */
+.task-content .completed {
+  text-decoration: line-through;
+  color: #A4A4A4;
+}
+
+/* The date that shows up to the left of the button */
+.deadline {
+  background-color: #2a3b5a;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 14px;
+  margin-right: 16px;
+}
+
+/* the "+" icon */
+.deadline-task-icon {
+  color: #00ff00;
+}
+
+.deadline-btn {
+  background: none;
+  border: box;
+  border-radius: 6px;
+  color: #A4A4A4;
+  font-size: 12px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.delete-btn {
+  background: none;
+  border: box;
+  border-radius: 6px;
+  color: white;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.edit-btn {
+  background: none;
+  border-radius: 5px;
+  border: none;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}

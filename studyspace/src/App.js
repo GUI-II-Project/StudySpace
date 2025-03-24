@@ -4,6 +4,7 @@ import NavBar from './components/NavBar';
 import LandingPage from './pages/Landing';
 import NotesPage from './pages/NotesPage';
 import Calendar from './pages/Calendar';
+import TaskListPage from './pages/TaskListPage';
 import './App.css';
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/notes" element={<NotesPage />} />
           <Route path="/calendar" element={<Calendar />} />
+          <Route path="/tasks" element={<TaskListPage />} />
         </Routes>
       </Router>
     </div>
