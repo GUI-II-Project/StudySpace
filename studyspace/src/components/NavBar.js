@@ -5,8 +5,8 @@ import logo from "../imgs/logo.png";
 class NavBar extends React.Component {
   render() {
     return (
-      <div>
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+      <div style={{ backgroundColor: "#0D1732" }}>
+        <nav className="navbar navbar-expand-lg navbar-light">
           <div
             className="container-fluid"
             style={{ marginLeft: "1rem", marginRight: "1rem" }}
@@ -16,22 +16,22 @@ class NavBar extends React.Component {
             </Link>
             <ul className="navbar-nav">
               <li className="nav-item">
-                <Link className="nav-link" to="/">
+                <Link className="nav-link text-white" to="/home">
                   Home
                 </Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to="/notes">
+                <Link className="nav-link text-white" to="/notes">
                   Notes
                 </Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to="/calendar">
+                <Link className="nav-link text-white" to="/calendar">
                   Calendar
                 </Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to="/tasks">
+                <Link className="nav-link text-white" to="/tasks">
                   Tasks
                 </Link>
               </li>
