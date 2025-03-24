@@ -1,10 +1,10 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import NavBar from './components/NavBar';
-import LandingPage from './pages/Landing';
-import NotesPage from './pages/NotesPage';
-import Calendar from './pages/Calendar';
-import './App.css';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import NavBar from "./components/NavBar";
+import LandingPage from "./pages/Landing";
+import NotesPage from "./pages/NotesPage";
+import Calendar from "./pages/Calendar";
+import "./App.css";
 
 function App() {
   return (

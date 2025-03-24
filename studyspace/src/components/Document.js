@@ -59,7 +59,7 @@ class Document extends React.Component {
         contentEditable="true"
         className="editor"
         ref={this.props.documentRef}
-        style={{fontFamily: this.props.selectedFont}}
+        style={{ fontFamily: this.props.selectedFont }}
         suppressContentEditableWarning={true}
       ></div>
     );

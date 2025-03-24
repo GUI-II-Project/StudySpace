@@ -2,7 +2,6 @@ import "../notes.css";
 import React from "react";
 
 class ToolBar extends React.Component {
-
   handleIncreaseFont = () => {
     const newSize = Math.min(7, Number(this.props.fontSize) + 1).toString();
     this.props.onFontSizeChange(newSize);
@@ -15,7 +14,14 @@ class ToolBar extends React.Component {
   };
 
   render() {
-    const { onFormat, activeFormats, fontSize, onFontSizeChange, fontColor, onFontColorChange } = this.props;
+    const {
+      onFormat,
+      activeFormats,
+      fontSize,
+      onFontSizeChange,
+      fontColor,
+      onFontColorChange,
+    } = this.props;
     return (
       <div className="format-bar d-flex align-items-center justify-content-center">
         <div className="format-buttons m-0 px-2 d-flex align-items-center justify-content-center">
@@ -51,12 +57,14 @@ class ToolBar extends React.Component {
           >
             <i className="bi bi-arrow-clockwise"></i>
           </button>
-          <select 
+          <select
             value={this.props.selectedFont}
             onChange={(e) => this.props.onFontChange(e.target.value)}
-            >
+          >
             <option value="Arial">Arial</option>
-            <option value="'Times New Roman', Times, serif">Times New Roman</option>
+            <option value="'Times New Roman', Times, serif">
+              Times New Roman
+            </option>
             <option value="'Courier New'">Courier New</option>
             <option value="Georgia">Georgia</option>
             <option value="Inter">Inter</option>
@@ -90,10 +98,13 @@ class ToolBar extends React.Component {
             title="Change font color"
           />
           <div id="size">
-            <button className="tool" onClick={this.handleDecreaseFont}> 
+            <button className="tool" onClick={this.handleDecreaseFont}>
               <i className="bi bi-dash"></i>
             </button>
-            <select onChange={(e) => onFontSizeChange(e.target.value)} value={fontSize}>
+            <select
+              onChange={(e) => onFontSizeChange(e.target.value)}
+              value={fontSize}
+            >
               <option value="1">xxsmall</option>
               <option value="2">xsmall</option>
               <option value="3">small</option>
