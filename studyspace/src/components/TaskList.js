@@ -1,17 +1,17 @@
-import '../TaskList.css';
-import React, { useState } from 'react';
+import "../TaskList.css";
+import React, { useState } from "react";
 
 // receiving properties from TaskListPage
 function TaskList(props) {
   // State for new task input
-  const [newTask, setNewTask] = useState('');
+  const [newTask, setNewTask] = useState("");
 
   // Adds a task
   // check if input isnt empty
   function addTask() {
-    if (newTask.trim() !== '') {
+    if (newTask.trim() !== "") {
       props.onAddTask(newTask);
-      setNewTask(''); // Reset the input bar
+      setNewTask(""); // Reset the input bar
     }
   }
 
@@ -23,7 +23,7 @@ function TaskList(props) {
   // Triggers task addition on Enter key press
   // This is used when adding a task
   function handleKeyPress(event) {
-    if (event.key === 'Enter') {
+    if (event.key === "Enter") {
       addTask();
     }
   }
@@ -43,7 +43,7 @@ function TaskList(props) {
     const newDescription = prompt("Edit your task:", currentDescription);
 
     // check if new input isnt empty
-    if (newDescription !== null && newDescription.trim() !== '') {
+    if (newDescription !== null && newDescription.trim() !== "") {
       props.onEditTask(index, newDescription);
     }
   }
@@ -54,7 +54,7 @@ function TaskList(props) {
     const deadline = prompt("Set a deadline (example: 3/20/2024):");
 
     // check if the input isnt empty
-    if (deadline !== null && deadline.trim() !== '') {
+    if (deadline !== null && deadline.trim() !== "") {
       props.onAddDeadline(index, deadline);
     }
   }
@@ -62,18 +62,22 @@ function TaskList(props) {
   // Render the task list component to the page
   return (
     <div className="task-list-container">
-      <div className="task-list-header">        {/* Header with title and date (change this to make display the current date) */}
+      <div className="task-list-header">
+        {" "}
+        {/* Header with title and date (change this to make display the current date) */}
         <h2>Tasks</h2>
         <span>March 23, 2025</span>
       </div>
 
-      <div className="add-task">                {/* New task input section */}
-        <span className="add-task-icon">+</span>    {/* plus icon styling */}
+      <div className="add-task">
+        {" "}
+        {/* New task input section */}
+        <span className="add-task-icon">+</span> {/* plus icon styling */}
         <input
           type="text"
           placeholder="Add task"
           value={newTask}
-          onChange={handleInputChange}    /* for changing tasks */
+          onChange={handleInputChange} /* for changing tasks */
           onKeyPress={handleKeyPress}
         />
       </div>
@@ -82,10 +86,8 @@ function TaskList(props) {
       <ul className="task-list">
         {props.tasks.map((task, index) => (
           <li key={index} className="task-item">
-
             {/* Task description and controls */}
             <div className="task-content">
-
               {/* Edit button */}
               <button
                 className="edit-btn"
@@ -102,31 +104,30 @@ function TaskList(props) {
               />
 
               {/* display task description, conditional styling if task is completed */}
-              <span className={task.completed ? 'completed' : ''}>
+              <span className={task.completed ? "completed" : ""}>
                 {task.description}
               </span>
             </div>
 
             {/* Task actions for deadline and delete */}
             <div className="task-actions">
-
               {/* if a deadline is set, show it */}
-              {task.deadline ? <span className="deadline">{task.deadline}</span> : null}
+              {task.deadline ? (
+                <span className="deadline">{task.deadline}</span>
+              ) : null}
 
               {/* Deadline setting button */}
               <button
                 className="deadline-btn"
                 onClick={() => deadlineChange(index)}
               >
-                <span className="deadline-task-icon">+</span>     {/* plus icon styling */}
+                <span className="deadline-task-icon">+</span>{" "}
+                {/* plus icon styling */}
                 Add Deadline
               </button>
 
               {/* Delete button */}
-              <button
-                className="delete-btn"
-                onClick={() => deleteTask(index)}
-              >
+              <button className="delete-btn" onClick={() => deleteTask(index)}>
                 🗑️
               </button>
             </div>
