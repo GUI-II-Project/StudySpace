@@ -7,7 +7,11 @@ function HomePage() {
   return (
     <div className="vh-100 d-flex flex-column">
       <NavBar />
-      <div className="d-flex justify-content-center flex-grow-1" style={{ marginTop: "150px" }}>
+      <PomodoroTimer />
+      <div
+        className="d-flex justify-content-center flex-grow-1"
+        style={{ marginTop: "150px" }}
+      >
         <Greeting />
       </div>
     </div>
