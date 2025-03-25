@@ -1,4 +1,4 @@
-import "../notes.css";
+import "../css/notes.css";
 import React from "react";
 
 class ToolBar extends React.Component {
