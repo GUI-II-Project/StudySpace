@@ -62,11 +62,16 @@ const Calendar = () => {
           View and manage your study schedule with ease.
         </p>
       </div>
-      
+
       <div style={{ marginTop: "2rem", width: "100%" }}>
         <iframe
           src="https://calendar.google.com/calendar/embed?src=primary&ctz=America/New_York"
-          style={{ border: 0, width: "100%", height: "700px", display: "block" }}
+          style={{
+            border: 0,
+            width: "100%",
+            height: "700px",
+            display: "block",
+          }}
           frameBorder="0"
           scrolling="no"
           title="Google Calendar"
