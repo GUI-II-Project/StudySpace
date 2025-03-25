@@ -62,20 +62,19 @@ const Calendar = () => {
           View and manage your study schedule with ease.
         </p>
       </div>
-      <div
-        style={{ display: "flex", justifyContent: "center", marginTop: "2rem" }}
-      >
+      
+      <div style={{ marginTop: "2rem", width: "100%" }}>
         <iframe
           src="https://calendar.google.com/calendar/embed?src=primary&ctz=America/New_York"
-          style={{ border: 0, width: "80%", height: "600px" }}
+          style={{ border: 0, width: "100%", height: "700px", display: "block" }}
           frameBorder="0"
           scrolling="no"
           title="Google Calendar"
         ></iframe>
       </div>
       <div style={{ textAlign: "center", marginTop: "2rem" }}>
-        <h2>Upcoming Events</h2>
-        <ul>
+        <h2 style={{ color: "white" }}>Upcoming Events</h2>
+        <ul style={{ color: "white", listStyle: "none", padding: 0 }}>
           {events.length > 0 ? (
             events.map((event) => (
               <li key={event.id}>
