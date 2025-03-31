@@ -22,7 +22,7 @@ function Sidebar() {
         style={{ backgroundColor: "#212B58" }}
       >
         <div class="offcanvas-header">
-          <h5 class="offcanvas-title" id="offcanvasExampleLabel">
+          <h5 class="offcanvas-title" id="offcanvasExampleLabel" style={{ paddingLeft: "1rem", paddingTop: "1rem" }}>
             Study Tools
           </h5>
           <button
@@ -34,7 +34,7 @@ function Sidebar() {
           ></button>
         </div>
         <div class="offcanvas-body">
-          <PomodoroTimer />
+          <PomodoroTimer/>
           <Player />
         </div>
       </div>
