@@ -1,18 +1,19 @@
 import PomodoroTimer from "./PomodoroTimer";
 import Player from "./Player";
+import { MdOutlineMenu } from "react-icons/md";
 
 function Sidebar() {
   return (
     <div>
-      <button
-        class="btn btn-primary"
+      <MdOutlineMenu
         type="button"
         data-bs-toggle="offcanvas"
         data-bs-target="#offcanvasExample"
         aria-controls="offcanvasExample"
+        style={{ color: "white", fontSize: "3rem", cursor: "pointer" }}
       >
         Button
-      </button>
+      </MdOutlineMenu>
       <div
         class="offcanvas offcanvas-end text-white"
         tabindex="-1"
