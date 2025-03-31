@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { gapi } from "gapi-script";
 import "../App.css";
 
@@ -94,21 +93,6 @@ const Calendar = () => {
           )}
         </ul>
       </div>
-      <div style={{ textAlign: "center", marginTop: "2rem" }}>
-        <Link to="/" className="btn btn-dark">
-          Back to Home
-        </Link>
-      </div>
-      <footer className="bg-light pt-2 pb-2" style={{ marginTop: "4rem" }}>
-        <div className="container">
-          <div className="text-center mt-3">
-            <p>
-              Study Space 2025. Created by Michelle, Sunny, David, Nik, and
-              Lucas.
-            </p>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 };
