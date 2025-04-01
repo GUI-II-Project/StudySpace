@@ -31,7 +31,11 @@ function SignUpForm() {
   }
 
   return (
-    <form className="w-100" style={{ maxWidth: "400px" }} onSubmit={handleSignUp}>
+    <form
+      className="w-100"
+      style={{ maxWidth: "400px" }}
+      onSubmit={handleSignUp}
+    >
       <h2 className="text-white text-center mb-4">Create Account</h2>
 
       {error && <div className="alert alert-danger">{error}</div>}

@@ -42,7 +42,11 @@ function LoginForm() {
   }
 
   return (
-    <form className="w-100" style={{ maxWidth: "400px" }} onSubmit={handleManualLogin}>
+    <form
+      className="w-100"
+      style={{ maxWidth: "400px" }}
+      onSubmit={handleManualLogin}
+    >
       <label className="form-label fs-5 text-white">Username</label>
       <input
         type="text"
@@ -63,10 +67,15 @@ function LoginForm() {
 
       {error && <div className="alert alert-danger">{error}</div>}
 
-      <button type="submit" className="btn btn-dark w-100 mb-4">Login</button>
+      <button type="submit" className="btn btn-dark w-100 mb-4">
+        Login
+      </button>
 
       <div className="d-flex justify-content-center mb-4">
-        <GoogleLogin onSuccess={handleGoogleSuccess} onError={handleGoogleError} />
+        <GoogleLogin
+          onSuccess={handleGoogleSuccess}
+          onError={handleGoogleError}
+        />
       </div>
 
       <p className="text-center text-light">
