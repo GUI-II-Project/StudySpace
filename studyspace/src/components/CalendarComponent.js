@@ -30,9 +30,8 @@ const Calendar = () => {
         })
         .catch((err) => console.error("Google API error:", err));
     }
-    gapi.load("client:auth2", initClient, (err) =>
-      console.error("gapi.load error:", err),
-    );
+
+    gapi.load("client:auth2", initClient);
   }, []);
 
   const listUpcomingEvents = () => {
@@ -52,37 +51,36 @@ const Calendar = () => {
   };
 
   return (
-    <div>
-      <div style={{ marginTop: "4rem", textAlign: "center" }}>
-        <h1 style={{ fontSize: "3rem", fontWeight: "bold", color: "white" }}>
-          Your Calendar
-        </h1>
-        <p style={{ fontSize: "1.2rem", color: "gray" }}>
+    <div className="container-fluid py-5 px-4">
+      <div className="text-center mb-5">
+        <h1 className="text-white display-4 fw-bold">Your Calendar</h1>
+        <p className="text-light fs-5">
           View and manage your study schedule with ease.
         </p>
       </div>
 
-      <div style={{ marginTop: "2rem", width: "100%" }}>
+      <div className="mb-5" style={{ width: "100%" }}>
         <iframe
           src="https://calendar.google.com/calendar/embed?src=primary&ctz=America/New_York"
           style={{
             border: 0,
             width: "100%",
-            height: "700px",
-            display: "block",
+            height: "80vh",
+            minHeight: "500px",
           }}
           frameBorder="0"
           scrolling="no"
           title="Google Calendar"
         ></iframe>
       </div>
-      <div style={{ textAlign: "center", marginTop: "2rem" }}>
-        <h2 style={{ color: "white" }}>Upcoming Events</h2>
-        <ul style={{ color: "white", listStyle: "none", padding: 0 }}>
+
+      <div className="text-center">
+        <h2 className="text-white mb-3">Upcoming Events</h2>
+        <ul className="text-white list-unstyled">
           {events.length > 0 ? (
             events.map((event) => (
               <li key={event.id}>
-                {event.summary} -{" "}
+                {event.summary} –{" "}
                 {new Date(
                   event.start.dateTime || event.start.date,
                 ).toLocaleString()}

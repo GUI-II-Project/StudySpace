@@ -5,11 +5,9 @@ import "../App.css";
 
 const Calendar = () => {
   return (
-    <div>
+    <div className="min-vh-100">
       <NavBar />
-      <div
-        style={{ display: "flex", justifyContent: "center", marginTop: "2rem" }}
-      >
+      <div className="container-fluid px-4 py-5">
         <CalendarComponent />
       </div>
     </div>
