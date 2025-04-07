@@ -1,0 +1,9 @@
+/* Organizing the page */
+.page-container {
+    margin-top: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 80vh;
+    overflow-y: hidden;
+} 

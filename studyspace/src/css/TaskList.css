@@ -1,0 +1,222 @@
+/* the container of the list */
+.task-list-container {
+  background-color: rgba(33, 43, 88, 0.9);
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 1000px;
+  min-height: 500px;
+  font-family: Inter;
+  border: 2px solid rgba(76, 81, 102, 0.9);
+  max-height: 50vh;
+  overflow-y: auto;
+}
+
+/* the header */
+.task-list-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* the "tasks" title on the top left*/
+.task-list-header h2 {
+  margin-left: 15px;
+  font-size: 24px;
+  text-decoration: underline;
+}
+
+/* the date on the top right */
+.task-list-header span {
+  font-size: 20px;
+  padding-right: 5px;
+}
+
+/* task line */
+.add-task {
+  display: flex;
+  align-items: center;
+  margin: 15px;
+  margin-left: 10px;
+}
+
+/* The "+" icon */
+.add-task-icon {
+  color: #80FF00;
+  font-size: 20px;
+}
+
+/* Add task input */
+.add-task input {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 16px;
+  outline: none;
+}
+
+/* Keeps tasks to the left of the component */
+.task-list {
+  padding: 0;
+}
+
+ /* each individual task line */
+.task-item {
+  background: rgba(68, 89, 185, 0.1);
+  border-style: solid;
+  border-radius: 10px;
+  border-color: rgba(68, 89, 185, 0);
+  margin-bottom: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 10px;
+  //border-bottom: 2px solid #2a3b5a;
+}
+
+.task-content input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+/* cross through a task when it is checked off */
+.task-content .completed {
+  text-decoration: line-through;
+  color: #A4A4A4;
+}
+
+/* The date that shows up to the left of the button */
+.deadline {
+  background-color: #2a3b5a;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 14px;
+  margin-right: 16px;
+}
+
+.deadline-btn {
+  background-color:rgb(39, 53, 88);
+  border: 1px solid #2e3a59;
+  padding: 3px 10px;
+  border: box;
+  border-radius: 6px;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  margin-right: 10px;
+  //display: inline-block;
+  box-shadow: 0 8px 16px 0 rgba(21, 21, 23, 0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+  transition-duration: 0.4s;
+}
+
+.deadline-btn:hover {
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+  background-color:rgb(53, 67, 102);
+}
+
+.deadline-btn:active {
+  opacity: 60%;
+  box-shadow: none;
+}
+
+
+.hidden-date-input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  width: 0;
+  height: 0;
+}
+
+
+.delete-btn {
+  background-color:rgb(45, 56, 84);
+  border: 1px solid #2e3a59;
+  padding: 3px 10px;
+  border: box;
+  border-radius: 6px;
+  color: white;
+  font-size: 12px;
+  cursor: pointer;
+  /* shadow on the button */
+  box-shadow: 0 8px 16px 0 rgba(15, 15, 16, 0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+  transition-duration: 0.4s;
+}
+
+.delete-btn:hover {
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+  background-color:rgb(53, 67, 102);
+  border: 1px solid red;
+}
+
+.delete-btn:active {
+  opacity: 60%;
+  box-shadow: none;
+}
+
+.edit-btn {
+  background: none;
+  border-radius: 5px;
+  border: none;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+
+/* COMPACT MODE for Sidebar Widget */
+.task-list-container.compact {
+  width: 100%;
+  min-height: auto;
+  padding: 15px;
+  font-size: 14px;
+  border-radius: 14px;
+}
+
+.task-list-container.compact .task-list-header h2 {
+  font-size: 18px;
+  margin-left: 6px;
+  text-decoration: underline;
+}
+
+.task-list-container.compact .task-list-header span {
+  display: none; /* hide date on widget for less clutter */
+}
+
+.task-list-container.compact .add-task {
+  margin: 10px;
+}
+
+.task-list-container.compact .add-task-icon {
+  font-size: 16px;
+}
+
+/* add task line */
+.task-list-container.compact .add-task input {
+  font-size: 14px;
+}
+
+/* minimizing each task */
+.task-list-container.compact .task-item {
+  padding: 6px 8px;
+}
+
+/* .task-list-container.compact .task-content {
+  font-size: 10px;
+} */
+
+.task-list-container.compact .edit-btn,
+.task-list-container.compact .delete-btn {
+  /* display: none; hide extra controls */
+  transform: scale(0.85);
+  font-size: scale(0.5);
+}
+
+/* not displaying the add deadline button for now */
+.task-list-container.compact .deadline-btn{
+  display: none;
+  /* font-size:10px; */
+}
+
+/* make checkbox a little smaller */
+.task-list-container.compact input[type="checkbox"] {
+  transform: scale(0.85);
+}

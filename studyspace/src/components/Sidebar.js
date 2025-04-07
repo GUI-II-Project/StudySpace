@@ -1,5 +1,6 @@
 import PomodoroTimer from "./PomodoroTimer";
 import Player from "./Player";
+import TaskManager from "./TaskManager.js"
 import { MdOutlineMenu } from "react-icons/md";
 
 function Sidebar() {
@@ -40,6 +41,7 @@ function Sidebar() {
         <div class="offcanvas-body">
           <PomodoroTimer />
           <Player />
+          <TaskManager compact />
         </div>
       </div>
     </div>
