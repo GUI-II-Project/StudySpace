@@ -1,8 +1,9 @@
-import "../TaskList.css";
+import "../css/TaskList.css";
 import React, { useState } from "react";
 
 // receiving properties from TaskListPage
 function TaskList(props) {
+  const { compact } = props;
   // State for new task input
   const [newTask, setNewTask] = useState("");
 
@@ -48,25 +49,19 @@ function TaskList(props) {
     }
   }
 
-  // Add a deadline or change a deadline
-  // Currently, any string can be entered, maybe change this so that the user can pick from a calendar pop up
-  function deadlineChange(index) {
-    const deadline = prompt("Set a deadline (example: 3/20/2024):");
-
-    // check if the input isnt empty
-    if (deadline !== null && deadline.trim() !== "") {
-      props.onAddDeadline(index, deadline);
-    }
-  }
-
   // Render the task list component to the page
   return (
-    <div className="task-list-container">
+    <div className={`task-list-container ${compact ? "compact" : ""}`}>
       <div className="task-list-header">
         {" "}
         {/* Header with title and date (change this to make display the current date) */}
         <h2>Tasks</h2>
-        <span>March 23, 2025</span>
+        {/* getting and displaying the current date */}
+        <span>{new Date().toLocaleDateString(undefined, {
+          month: "long",
+          day: "numeric",
+          year: "numeric",
+        })}</span>
       </div>
 
       <div className="add-task">
@@ -109,28 +104,32 @@ function TaskList(props) {
               </span>
             </div>
 
-            {/* Task actions for deadline and delete */}
+            {/* Task actions for deadline */}
             <div className="task-actions">
-              {/* if a deadline is set, show it */}
-              {task.deadline ? (
-                <span className="deadline">{task.deadline}</span>
-              ) : null}
-
-              {/* Deadline setting button */}
-              <button
+              {/* Show deadline if it's set, otherwise show "Add deadline" */}
+              <span
                 className="deadline-btn"
-                onClick={() => deadlineChange(index)}
+                onClick={() => document.getElementById(`date-picker-${index}`).showPicker()}
               >
-                <span className="deadline-task-icon">+</span>{" "}
-                {/* plus icon styling */}
-                Add Deadline
-              </button>
+                {task.deadline || "+Add deadline"}
+              </span>
+
+              {/* Hidden date input to trigger native picker */}
+              <input
+                type="date"
+                id={`date-picker-${index}`}
+                className="hidden-date-input"
+                value={task.deadline || ""}
+                onChange={(e) => props.onAddDeadline(index, e.target.value)}
+              />
+
 
               {/* Delete button */}
               <button className="delete-btn" onClick={() => deleteTask(index)}>
                 🗑️
               </button>
             </div>
+
           </li>
         ))}
       </ul>
