@@ -25,7 +25,7 @@ class ToolBar extends React.Component {
     return (
       <div className="format-bar d-flex align-items-center justify-content-center">
         <div className="format-buttons m-0 px-2 d-flex align-items-center justify-content-center">
-         {/*  <button
+          {/*  <button
             className="tool"
             type="button"
             data-bs-toggle="dropdown"
