@@ -209,3 +209,20 @@ function NotesPage() {
           ? `Last saved at ${lastSaved.toLocaleTimeString()}`
           : "Not saved yet"}
       </div>
+    </div>
+  );
+}
+
+// this just converts the rgb value from the color picker to hex
+// to be used when updating the color picker's value on change
+function rgbToHex(rgb) {
+  const result = rgb.match(/\d+/g);
+  if (!result) return rgb;
+  const [r, g, b] = result.map(Number);
+  return (
+    "#" +
+    ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase()
+  );
+}
+
+export default NotesPage;
