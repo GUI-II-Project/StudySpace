@@ -2,14 +2,18 @@ import React, { useRef, useState, useEffect, useCallback } from "react";
 import { saveAs } from "file-saver";
 import NavBar from "../components/NavBar.js";
 import ToolBar from "../components/ToolBar.js";
-import Document from "../components/Document.js";
+import { database } from "../configuration.jsx";
+import { ref, onValue, set } from "firebase/database";
+import { useAuth } from "../context/AuthContext";
 
 function NotesPage() {
-  const documentRef = useRef();
+  const documentRef = useRef(); // reference to editable div
+  const { user: currentUser } = useAuth(); // get current signed in user
 
-  const [fontSize, setFontSize] = useState("3");
-  const [selectedFont, setSelectedFont] = useState("Arial");
-  const [fontColor, setFontColor] = useState("#000000");
+  const [fontSize, setFontSize] = useState("3"); // toolbar font size
+  const [selectedFont, setSelectedFont] = useState("Arial"); // toolbar font
+  const [fontColor, setFontColor] = useState("#000000"); // toolbar font color
+  const [lastSaved, setLastSaved] = useState(null); // display last save time
 
   // tracks if the bold, italic, and underline buttons are active
   const [activeFormats, setActiveFormats] = useState({
@@ -22,7 +26,7 @@ function NotesPage() {
   const handleFormat = (command, value = null) => {
     document.execCommand(command, false, value);
 
-    // avoids the justify buttons messing with the font atributes
+    // avoids the justify buttons messing with the font attributes
     if (["justifyLeft", "justifyCenter", "justifyRight"].includes(command)) {
       document.execCommand("fontSize", false, fontSize);
       document.execCommand("fontName", false, selectedFont);
@@ -55,9 +59,7 @@ function NotesPage() {
 
     // checks current fontName and updates toolbar. Default Arial
     const currentFont = document.queryCommandValue("fontName") || "Arial";
-    console.log("unsantitized: " + currentFont);
     const sanitized = currentFont.replace(/"/g, "'");
-    console.log("santitized: " + sanitized);
     setSelectedFont(sanitized);
   }, []);
 
@@ -105,33 +107,74 @@ function NotesPage() {
   useEffect(() => {
     const document = documentRef.current; // gets document DOM reference
 
-    // checks which formates are active
+    // checks which formats are active
     const handleSelectionChange = () => {
       updateActiveFormats();
     };
-    // checks which formates are active
+
+    // checks specifically for keyup events
     const handleKeyUp = () => {
       updateActiveFormats();
     };
 
-    // listens for any slection change within the document. clicking, moving cursor, ect.
+    // listens for any selection change within the document. clicking, moving cursor, etc.
     document.addEventListener("selectionchange", handleSelectionChange);
-    // checks specifically for keyup events
-    if (document) {
-      document.addEventListener("keyup", handleKeyUp);
-    }
+    document.addEventListener("keyup", handleKeyUp);
 
     // just removes listeners at the end
     return () => {
       document.removeEventListener("selectionchange", handleSelectionChange);
-      if (document) {
-        document.removeEventListener("keyup", handleKeyUp);
-      }
+      document.removeEventListener("keyup", handleKeyUp);
     };
   }, [updateActiveFormats]);
 
+  // loads saved note content from firebase when page loads
+  useEffect(() => {
+    if (!currentUser) return;
+
+    const noteRef = ref(database, `notes/${currentUser.uid}`);
+    onValue(
+      noteRef,
+      (snapshot) => {
+        const data = snapshot.val();
+        if (data && documentRef.current) {
+          documentRef.current.innerHTML = data;
+        }
+      },
+      { onlyOnce: true },
+    );
+  }, [currentUser]);
+
+  // saves document content to firebase on DOM changes after 10 seconds
+  useEffect(() => {
+    if (!documentRef.current || !currentUser) return;
+
+    let saveTimeout = null;
+
+    const observer = new MutationObserver(() => {
+      if (saveTimeout) clearTimeout(saveTimeout);
+      saveTimeout = setTimeout(() => {
+        const content = documentRef.current.innerHTML;
+        const noteRef = ref(database, `notes/${currentUser.uid}`);
+        set(noteRef, content);
+        setLastSaved(new Date());
+      }, 10000); // 10 seconds
+    });
+
+    observer.observe(documentRef.current, {
+      childList: true,
+      characterData: true,
+      subtree: true,
+    });
+
+    return () => {
+      if (saveTimeout) clearTimeout(saveTimeout);
+      observer.disconnect();
+    };
+  }, [currentUser]);
+
   return (
-    <div style={{ paddingBottom: "2rem" }}>
+    <div style={{ position: "relative", minHeight: "100vh" }}>
       <NavBar />
       <ToolBar
         onFormat={handleFormat}
@@ -144,7 +187,28 @@ function NotesPage() {
         onFontColorChange={handleFontColorChange}
         downloadDocx={downloadDocx}
       />
-      <Document documentRef={documentRef} />
+      <div
+        contentEditable="true"
+        className="editor"
+        ref={documentRef}
+        style={{ fontFamily: selectedFont }}
+        suppressContentEditableWarning={true}
+      ></div>
+      <div
+        style={{
+          position: "fixed",
+          bottom: "6px",
+          left: "10px",
+          color: "white",
+          fontSize: "0.75rem",
+          opacity: 0.8,
+          pointerEvents: "none",
+        }}
+      >
+        {lastSaved
+          ? `Last saved at ${lastSaved.toLocaleTimeString()}`
+          : "Not saved yet"}
+      </div>
     </div>
   );
 }
