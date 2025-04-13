@@ -67,19 +67,19 @@ function TaskManager({ compact }) {
   return (
     <div>
       {/* <NavBar /> */}
-      <div className="page-container">
-        {/* TaskList component to display and manage tasks */}
-        <TaskList
-          tasks={tasks}
-          onAddTask={addTask}
-          onEditTask={editTask}
-          onDeleteTask={deleteTask}
-          onAddDeadline={addDeadline}
-          onCheckTask={checkTask}
-          compact={compact} // this to adjust UI
-        />
-      </div>
+      {/* <div className="page-container"> */}
+      {/* TaskList component to display and manage tasks */}
+      <TaskList
+        tasks={tasks}
+        onAddTask={addTask}
+        onEditTask={editTask}
+        onDeleteTask={deleteTask}
+        onAddDeadline={addDeadline}
+        onCheckTask={checkTask}
+        compact={compact} // this to adjust UI
+      />
     </div>
+    // </div>
   );
 }
 
