@@ -1,8 +1,9 @@
 import React from "react";
 import NavBar from "../components/NavBar";
 import Greeting from "../components/Greeting";
+import Quote from "../components/Quote";
 
-function HomePage() {
+const HomePage = () => {
   return (
     <div>
       <div className="vh-100 d-flex flex-column">
@@ -13,9 +14,10 @@ function HomePage() {
         >
           <Greeting />
         </div>
+        <Quote />
       </div>
     </div>
   );
-}
+};
 
 export default HomePage;
