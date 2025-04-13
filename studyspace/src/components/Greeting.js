@@ -23,9 +23,9 @@ class Greeting extends React.Component {
   // picks the greeting based on the time of day
   getGreeting() {
     const hour = this.state.currentTime.getHours();
-    if (hour < 12) return "Good Morning";
-    if (hour < 18) return "Good Afternoon";
-    return "Good Evening";
+    if (hour < 12) return "Good morning, let's get productive";
+    if (hour < 18) return "Good afternoon, let's start studying";
+    return "Good evening, let's get into a flow state";
   }
 
   // format time as h:mm:ss
@@ -75,7 +75,7 @@ class Greeting extends React.Component {
 
     return (
       <div>
-        <div id="greeting">{this.getGreeting()}, Quackington</div>
+        <div id="greeting">{this.getGreeting()}</div>
         <div id="time">{this.formatTime(currentTime)}</div>
         <div id="date">
           {dayName}, {monthName} {day}, {year}
