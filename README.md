@@ -15,4 +15,4 @@ Project for GUI II by Michelle, Sunny, David, Nik, and Lucas.
 ## Resources
 
 Background image from https://wallhaven.cc/w/kxk7km
-Quotes from https://zenquotes.io
+Motivational quotes from https://qapi.vercel.app
