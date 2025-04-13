@@ -1,5 +1,6 @@
 import "../css/TaskList.css";
 import React, { useState } from "react";
+import { FaRegTrashAlt } from "react-icons/fa";
 
 // receiving properties from TaskListPage
 function TaskList(props) {
@@ -129,7 +130,7 @@ function TaskList(props) {
 
               {/* Delete button */}
               <button className="delete-btn" onClick={() => deleteTask(index)}>
-                🗑️
+                <FaRegTrashAlt />
               </button>
             </div>
           </li>
