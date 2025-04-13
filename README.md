@@ -1,4 +1,5 @@
 # Study Space
+
 **Project Link**: https://gui-ii-studyspace.web.app
 
 Getting into flow state is hard. And one key barrier? Scattered study tools.
@@ -12,4 +13,6 @@ Study Space solves this problem.
 Project for GUI II by Michelle, Sunny, David, Nik, and Lucas.
 
 ## Resources
+
 Background image from https://wallhaven.cc/w/kxk7km
+Quotes from https://zenquotes.io
