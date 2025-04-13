@@ -9,14 +9,31 @@ const Quote = () => {
   useEffect(() => {
     const getQuote = async () => {
       try {
-        const response = await fetch("https://zenquotes.io/api/today");
-        const data = await response.json();
-        if (data && data[0]) {
-          setQuote(data[0].q);
-          setAuthor(data[0].a);
+        const today = new Date().toISOString().split("T")[0];
+        const storedQuote = JSON.parse(localStorage.getItem("quote"));
+
+        if (storedQuote && storedQuote.date === today) {
+          setQuote(storedQuote.quote);
+          setAuthor(storedQuote.author);
+        } else {
+          const response = await fetch("https://qapi.vercel.app/api/random");
+          const data = await response.json();
+          if (data) {
+            setQuote(data.quote);
+            setAuthor(data.author);
+
+            localStorage.setItem(
+              "quote",
+              JSON.stringify({
+                quote: data.quote,
+                author: data.author,
+                date: today,
+              }),
+            );
+          }
         }
       } catch (error) {
-        console.error("Error fetching quote of the day:", error);
+        console.error("Error fetching quote:", error);
       }
     };
 
@@ -24,7 +41,14 @@ const Quote = () => {
   }, []);
 
   return (
-    <div style={{ color: "white", textAlign: "center", paddingBottom: "2rem" }}>
+    <div
+      style={{
+        color: "white",
+        textAlign: "center",
+        paddingBottom: "2rem",
+        paddingTop: "2rem",
+      }}
+    >
       <p>
         "{quote}" - {author}
       </p>
