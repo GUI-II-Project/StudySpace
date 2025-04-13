@@ -7,9 +7,7 @@ const Calendar = () => {
   return (
     <div className="min-vh-100">
       <NavBar />
-      <div className="container-fluid px-4 py-5">
-        <CalendarComponent />
-      </div>
+      <CalendarComponent />
     </div>
   );
 };

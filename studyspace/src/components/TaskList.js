@@ -57,11 +57,13 @@ function TaskList(props) {
         {/* Header with title and date (change this to make display the current date) */}
         <h2>Tasks</h2>
         {/* getting and displaying the current date */}
-        <span>{new Date().toLocaleDateString(undefined, {
-          month: "long",
-          day: "numeric",
-          year: "numeric",
-        })}</span>
+        <span>
+          {new Date().toLocaleDateString(undefined, {
+            month: "long",
+            day: "numeric",
+            year: "numeric",
+          })}
+        </span>
       </div>
 
       <div className="add-task">
@@ -109,7 +111,9 @@ function TaskList(props) {
               {/* Show deadline if it's set, otherwise show "Add deadline" */}
               <span
                 className="deadline-btn"
-                onClick={() => document.getElementById(`date-picker-${index}`).showPicker()}
+                onClick={() =>
+                  document.getElementById(`date-picker-${index}`).showPicker()
+                }
               >
                 {task.deadline || "+Add deadline"}
               </span>
@@ -123,13 +127,11 @@ function TaskList(props) {
                 onChange={(e) => props.onAddDeadline(index, e.target.value)}
               />
 
-
               {/* Delete button */}
               <button className="delete-btn" onClick={() => deleteTask(index)}>
                 🗑️
               </button>
             </div>
-
           </li>
         ))}
       </ul>

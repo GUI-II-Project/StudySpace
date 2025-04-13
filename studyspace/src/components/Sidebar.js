@@ -1,6 +1,6 @@
 import PomodoroTimer from "./PomodoroTimer";
 import Player from "./Player";
-import TaskManager from "./TaskManager.js"
+import TaskManager from "./TaskManager.js";
 import { MdOutlineMenu } from "react-icons/md";
 
 function Sidebar() {

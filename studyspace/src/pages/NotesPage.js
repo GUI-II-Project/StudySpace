@@ -131,7 +131,7 @@ function NotesPage() {
   }, [updateActiveFormats]);
 
   return (
-    <div>
+    <div style={{ paddingBottom: "2rem" }}>
       <NavBar />
       <ToolBar
         onFormat={handleFormat}
