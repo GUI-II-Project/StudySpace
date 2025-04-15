@@ -1,17 +1,19 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../configuration.jsx";
 
 function SignUpForm() {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState(""); // changed from username
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  function handleSignUp(e) {
+  async function handleSignUp(e) {
     e.preventDefault();
 
-    if (!username || !password || !confirmPassword) {
+    if (!email || !password || !confirmPassword) {
       return setError("All fields are required.");
     }
 
@@ -19,15 +21,17 @@ function SignUpForm() {
       return setError("Passwords do not match.");
     }
 
-    const users = JSON.parse(localStorage.getItem("users") || "{}");
-
-    if (users[username]) {
-      return setError("Username already exists.");
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      navigate("/login");
+    } catch (err) {
+      console.error("Signup error:", err);
+      if (err.code === "auth/email-already-in-use") {
+        setError("That email is already in use.");
+      } else {
+        setError("Failed to create account.");
+      }
     }
-
-    users[username] = password;
-    localStorage.setItem("users", JSON.stringify(users));
-    navigate("/login");
   }
 
   return (
@@ -40,13 +44,13 @@ function SignUpForm() {
 
       {error && <div className="alert alert-danger">{error}</div>}
 
-      <label className="form-label fs-5 text-white">Username</label>
+      <label className="form-label fs-5 text-white">Email</label>
       <input
-        type="text"
-        placeholder="Username"
+        type="email"
+        placeholder="Email"
         className="form-control bg-dark bg-opacity-75 text-white border-light mb-3"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
       />
 
       <label className="form-label fs-5 text-white">Password</label>

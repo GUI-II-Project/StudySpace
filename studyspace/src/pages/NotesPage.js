@@ -111,7 +111,6 @@ function NotesPage() {
     const handleSelectionChange = () => {
       updateActiveFormats();
     };
-
     // checks specifically for keyup events
     const handleKeyUp = () => {
       updateActiveFormats();
@@ -130,9 +129,11 @@ function NotesPage() {
 
   // loads saved note content from firebase when page loads
   useEffect(() => {
-    if (!currentUser) return;
+    if (!currentUser?.uid) return; // prevent from reading before auth is ready
 
     const noteRef = ref(database, `notes/${currentUser.uid}`);
+    console.log("Loading notes from path:", `notes/${currentUser.uid}`);
+
     onValue(
       noteRef,
       (snapshot) => {
@@ -141,13 +142,13 @@ function NotesPage() {
           documentRef.current.innerHTML = data;
         }
       },
-      { onlyOnce: true },
+      { onlyOnce: true }
     );
   }, [currentUser]);
 
   // saves document content to firebase on DOM changes after 10 seconds
   useEffect(() => {
-    if (!documentRef.current || !currentUser) return;
+    if (!documentRef.current || !currentUser?.uid) return; // skip if not logged in
 
     let saveTimeout = null;
 
@@ -156,8 +157,14 @@ function NotesPage() {
       saveTimeout = setTimeout(() => {
         const content = documentRef.current.innerHTML;
         const noteRef = ref(database, `notes/${currentUser.uid}`);
-        set(noteRef, content);
-        setLastSaved(new Date());
+        console.log("Saving notes to path:", `notes/${currentUser.uid}`);
+        set(noteRef, content)
+          .then(() => {
+            setLastSaved(new Date());
+          })
+          .catch((err) => {
+            console.error("Failed to save notes:", err);
+          });
       }, 10000); // 10 seconds
     });
 
