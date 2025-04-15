@@ -1,0 +1,50 @@
+.main-container{ /* generic container */
+    background-color: #090e24;
+    border-radius: 8px;
+    margin: auto;
+    resize: both;
+    max-width: 350px;
+    max-height: 300px;
+    min-width: 250px;
+    min-height: 250px;
+}
+
+.player-container{ /* generic container 2 */
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+}
+
+.player-header{ /* title */
+    margin: 20px 15px 10px 15px; /* top, right, bottom, left */
+    text-align: left;
+}
+
+.player-cmp{ /* video box -> orders objs top to bottom */
+    background-color: black;
+    border-top: 1px solid grey;    
+    border-bottom: 1px solid grey;
+    flex: 1;
+    position: relative;
+}
+
+.player-cmp > div { /* keeps input box locked */
+    position: absolute;
+}
+
+.url-box{ /* lower input section section */
+    background-color: #090e24;
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+.url-box input{ /* input box designation */
+    background-color: black;
+    border: none;
+    border-radius: 8px;
+    color: grey;
+    font-size: 0.8rem;
+    padding: 0.8rem 1rem;
+    width: 100%;
+}

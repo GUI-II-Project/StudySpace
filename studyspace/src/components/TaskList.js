@@ -12,7 +12,6 @@ function TaskList(props) {
   const [editingIndex, setEditingIndex] = useState(null);
   const [editedDescription, setEditedDescription] = useState("");
 
-
   // Adds a task
   // check if input isnt empty
   function addTask() {
@@ -135,15 +134,16 @@ function TaskList(props) {
                     onChange={(e) => setEditedDescription(e.target.value)}
                     onKeyDown={(e) => {
                       if (e.key === "Enter") saveTask(index); // Save task on Enter key
-                      if (e.key === "Escape") cancelEdit();   // Cancel editing on Escape key
+                      if (e.key === "Escape") cancelEdit(); // Cancel editing on Escape key
                     }}
-
                     // Automatically save when user clicks outside the input
                     onBlur={() => saveTask(index)}
                     autoFocus // Automatically focus the input when it appears
                   />
                   {/* Save and Cancel buttons */}
-                  <button className="save-btn" onClick={() => saveTask(index)}>✔</button>
+                  <button className="save-btn" onClick={() => saveTask(index)}>
+                    ✔
+                  </button>
 
                   {/* cancel button work in progress */}
                   {/* <button className="cancel-btn" onClick={cancelEdit}>✖</button> */}
@@ -160,9 +160,9 @@ function TaskList(props) {
             </div>
 
             {/* Task actions for deadline */}
-            < div className="task-actions" >
+            <div className="task-actions">
               {/* Show deadline if it's set, otherwise show "Add deadline" */}
-              < span
+              <span
                 className="deadline-btn"
                 onClick={() =>
                   document.getElementById(`date-picker-${index}`).showPicker()
@@ -185,11 +185,10 @@ function TaskList(props) {
                 <FaRegTrashAlt />
               </button>
             </div>
-          </li >
-        ))
-        }
-      </ul >
-    </div >
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
 
