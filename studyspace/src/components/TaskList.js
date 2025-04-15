@@ -8,6 +8,11 @@ function TaskList(props) {
   // State for new task input
   const [newTask, setNewTask] = useState("");
 
+  // for inline task editing
+  const [editingIndex, setEditingIndex] = useState(null);
+  const [editedDescription, setEditedDescription] = useState("");
+
+
   // Adds a task
   // check if input isnt empty
   function addTask() {
@@ -42,12 +47,25 @@ function TaskList(props) {
 
   // Edits task description
   function editTask(index, currentDescription) {
-    const newDescription = prompt("Edit your task:", currentDescription);
+    setEditingIndex(index);
+    setEditedDescription(currentDescription);
+  }
 
-    // check if new input isnt empty
-    if (newDescription !== null && newDescription.trim() !== "") {
-      props.onEditTask(index, newDescription);
+  // save task function when editing
+  function saveTask(index) {
+    // make sure input isnt empty
+    if (editedDescription.trim() !== "" && editedDescription !== null) {
+      props.onEditTask(index, editedDescription);
     }
+    setEditingIndex(null);
+    setEditedDescription("");
+  }
+
+  // cancel edit task with escape key
+  // need to update this
+  function cancelEdit() {
+    setEditingIndex(null);
+    // setEditedDescription("");
   }
 
   // Render the task list component to the page
@@ -78,6 +96,10 @@ function TaskList(props) {
           onChange={handleInputChange} /* for changing tasks */
           onKeyPress={handleKeyPress}
         />
+        <button className="add-task-button" onClick={addTask}>
+          🡆
+          {/* ↵ 🡺 🡆 ➤ ➔ */}
+        </button>
       </div>
 
       {/* List of tasks */}
@@ -101,16 +123,46 @@ function TaskList(props) {
                 onChange={() => checkTask(index)}
               />
 
-              {/* display task description, conditional styling if task is completed */}
-              <span className={task.completed ? "completed" : ""}>
-                {task.description}
-              </span>
+              {editingIndex === index ? (
+                // If this task is currently being edited, render an input field
+                <div className="edit-task-wrapper">
+                  <input
+                    type="text"
+                    className="edit-task-input"
+                    // Binds input value to state
+                    value={editedDescription}
+                    // Update state as the user types
+                    onChange={(e) => setEditedDescription(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") saveTask(index); // Save task on Enter key
+                      if (e.key === "Escape") cancelEdit();   // Cancel editing on Escape key
+                    }}
+
+                    // Automatically save when user clicks outside the input
+                    onBlur={() => saveTask(index)}
+                    autoFocus // Automatically focus the input when it appears
+                  />
+                  {/* Save and Cancel buttons */}
+                  <button className="save-btn" onClick={() => saveTask(index)}>✔</button>
+
+                  {/* cancel button work in progress */}
+                  {/* <button className="cancel-btn" onClick={cancelEdit}>✖</button> */}
+                </div>
+              ) : (
+                // If not editing, show the task description as text
+                <span
+                  className={task.completed ? "completed" : ""} // Apply "completed" style if task is marked done
+                  onDoubleClick={() => editTask(index, task.description)} // Optional: Start editing on double-click
+                >
+                  {task.description} {/* Render the task description */}
+                </span>
+              )}
             </div>
 
             {/* Task actions for deadline */}
-            <div className="task-actions">
+            < div className="task-actions" >
               {/* Show deadline if it's set, otherwise show "Add deadline" */}
-              <span
+              < span
                 className="deadline-btn"
                 onClick={() =>
                   document.getElementById(`date-picker-${index}`).showPicker()
@@ -133,10 +185,11 @@ function TaskList(props) {
                 <FaRegTrashAlt />
               </button>
             </div>
-          </li>
-        ))}
-      </ul>
-    </div>
+          </li >
+        ))
+        }
+      </ul >
+    </div >
   );
 }
 
