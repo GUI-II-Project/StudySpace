@@ -3,7 +3,7 @@ import ReactPlayer from "react-player";
 import { Resizable } from "re-resizable";
 import "../css/player.css";
 /* https://www.youtube.com/watch?v=VGSFKeGFWEA -> Youtube video for testing */
-//style snippet from npm: re-resizable demo showcase, altered for studyspace | basic error handling learned from react-hook-form
+//style snippet from npm: re-resizable demo showcase, altered for studyspace | might use basic error handling learned from react-hook-form
 
 const Player = () => {
   const [url, setUrl] = useState(null);
