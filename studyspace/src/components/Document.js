@@ -11,7 +11,7 @@ class Document extends React.Component {
         this.handleKeyDown,
       );
 
-      // Set the default font size to "medium" (numeric value 4)
+      // Set the default font size to "small" (numeric value 3)
       this.props.documentRef.current.focus();
       document.execCommand("fontSize", false, "3");
       document.execCommand("fontName", false, "Inter");
