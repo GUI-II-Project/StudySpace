@@ -47,6 +47,8 @@ function LoginForm() {
       style={{ maxWidth: "400px" }}
       onSubmit={handleManualLogin}
     >
+      <h2 className="text-white text-center mb-4">Study Space</h2>
+
       <label className="form-label fs-5 text-white">Username</label>
       <input
         type="text"
