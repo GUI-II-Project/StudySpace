@@ -193,12 +193,12 @@ function NotesPage() {
   const getNextNoteNumber = useCallback(() => {
     if (!notes.length) return 1;
     const numbers = notes
-      .map(note => {
+      .map((note) => {
         if (typeof note.name !== "string") return 0;
         const m = note.name.match(/^note(\d+)$/);
         return m ? +m[1] : 0;
       })
-      .filter(n => n > 0);
+      .filter((n) => n > 0);
     return numbers.length ? Math.max(...numbers) + 1 : 1;
   }, [notes]);
 
@@ -232,7 +232,7 @@ function NotesPage() {
     if (currentUser) {
       const noteRef = ref(database, `notes/${currentUser.uid}/${noteId}`);
       remove(noteRef).catch((err) =>
-        console.error("Error deleting note from Firebase:", err)
+        console.error("Error deleting note from Firebase:", err),
       );
     }
 
