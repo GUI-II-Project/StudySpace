@@ -190,16 +190,16 @@ function NotesPage() {
 
   // just keeps the default note names from duplicating
   const getNextNoteNumber = useCallback(() => {
-    if (notes.length === 0) return 1;
-    const numbers = notes
-      .map((note) => {
-        const match = note.name.match(/^note(\d+)$/);
-        return match ? parseInt(match[1], 10) : 0;
-      })
-      .filter((num) => num > 0);
-    const max = numbers.length ? Math.max(...numbers) : 0;
-    return max + 1;
-  }, [notes]);
+  if (!notes.length) return 1;
+  const numbers = notes
+    .map(note => {
+      if (typeof note.name !== "string") return 0;
+      const m = note.name.match(/^note(\d+)$/);
+      return m ? +m[1] : 0;
+    })
+    .filter(n => n > 0);
+  return numbers.length ? Math.max(...numbers) + 1 : 1;
+}, [notes]);
 
   // creates a new note with a name and id and sets the conent to ""
   const createNewNote = useCallback(() => {
@@ -371,6 +371,24 @@ function NotesPage() {
       observer.disconnect();
     };
   }, [currentUser, currentNoteId, noteName]);
+
+  useEffect(() => {
+  if (!currentUser) return;
+
+  // turns the notes[] into an object keyed by id, filtering out any bad entries
+  const notesObj = notes.reduce((acc, note) => {
+    if (!note.id || typeof note.name !== "string") return acc;
+    acc[note.id] = {
+      name:       note.name,
+      content:    note.content ?? "",
+      lastSaved:  note.lastSaved ?? new Date().toISOString(),
+    };
+    return acc;
+  }, {});
+
+  set(ref(database, `notes/${currentUser.uid}`), notesObj)
+    .catch(err => console.error("Bulk save failed:", err));
+}, [notes, currentUser]);
 
   return (
     <div style={{ position: "relative", minHeight: "100vh" }}>
