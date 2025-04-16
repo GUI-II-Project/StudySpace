@@ -12,7 +12,15 @@ Study Space solves this problem.
 
 Project for GUI II by Michelle, Sunny, David, Nik, and Lucas.
 
+## Run Study Space Locally
+
+```bash
+cd studyspace
+npm install
+npm start
+```
+
 ## Resources
 
-Background image from https://wallhaven.cc/w/kxk7km
+Background image from https://wallhaven.cc/w/kxk7km  
 Motivational quotes from https://qapi.vercel.app
