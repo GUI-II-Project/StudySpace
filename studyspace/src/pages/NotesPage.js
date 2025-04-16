@@ -5,7 +5,7 @@ import { jsPDF } from "jspdf";
 import NavBar from "../components/NavBar.js";
 import ToolBar from "../components/ToolBar.js";
 import { database } from "../configuration.jsx";
-import { ref, onValue, set } from "firebase/database";
+import { ref, onValue, set, remove } from "firebase/database";
 import { useAuth } from "../context/AuthContext";
 
 function NotesPage() {
@@ -167,21 +167,107 @@ function NotesPage() {
     if (noteId === currentNoteId) {
       setNoteName(newName);
     }
+
+    // immediately saves the new name to the database
+    if (currentUser) {
+      const noteRef = ref(database, `notes/${currentUser.uid}/${noteId}`);
+
+      let updatedContent = "";
+      if (noteId === currentNoteId && documentRef.current) {
+        updatedContent = documentRef.current.innerHTML;
+      } else {
+        const targetNote = notes.find((note) => note.id === noteId);
+        updatedContent = targetNote ? targetNote.content : "";
+      }
+
+      set(noteRef, {
+        name: newName,
+        content: updatedContent,
+        lastSaved: new Date().toISOString(),
+      });
+    }
   };
 
-  // create a new note, assign a new id and name, then switch to it.
-  const createNewNote = () => {
-    const newId = `n${notes.length + 1}`;
-    const defaultName = `note${notes.length + 1}`;
+  // just keeps the default note names from duplicating
+  const getNextNoteNumber = useCallback(() => {
+    if (notes.length === 0) return 1;
+    const numbers = notes
+      .map((note) => {
+        const match = note.name.match(/^note(\d+)$/);
+        return match ? parseInt(match[1], 10) : 0;
+      })
+      .filter((num) => num > 0);
+    const max = numbers.length ? Math.max(...numbers) : 0;
+    return max + 1;
+  }, [notes]);
+
+  // creates a new note with a name and id and sets the conent to ""
+  const createNewNote = useCallback(() => {
+    const nextNumber = getNextNoteNumber();
+    const defaultName = `note${nextNumber}`;
+    const newId = `n${Date.now()}`; // unique ID from timestamp
     const newNote = { id: newId, name: defaultName, content: "" };
-    setNotes([...notes, newNote]);
+
+    setNotes((prevNotes) => [...prevNotes, newNote]);
     setCurrentNoteId(newId);
     setNoteName(defaultName);
     if (documentRef.current) {
       documentRef.current.innerHTML = "";
       documentRef.current.focus();
     }
+    // saves the new note to the database
+    if (currentUser) {
+      const noteRef = ref(database, `notes/${currentUser.uid}/${newId}`);
+      set(noteRef, {
+        name: defaultName,
+        content: "",
+        lastSaved: new Date().toISOString(),
+      });
+    }
+  }, [getNextNoteNumber, currentUser]); // Include any dependencies createNewNote uses.
+
+  const deleteNote = (noteId) => {
+    // remove the note from Firebase
+    if (currentUser) {
+      const noteRef = ref(database, `notes/${currentUser.uid}/${noteId}`);
+      remove(noteRef).catch((error) => {
+        console.error("Error deleting note from Firebase:", error);
+      });
+    }
+
+    // update the list
+    setNotes((prevNotes) => {
+      const updatedNotes = prevNotes.filter((note) => note.id !== noteId);
+
+      // if the deleted note was the currently active note and
+      // there are still notes remaining, switch to the first one
+      if (noteId === currentNoteId && updatedNotes.length > 0) {
+        const newCurrentNote = updatedNotes[0];
+        setCurrentNoteId(newCurrentNote.id);
+        setNoteName(newCurrentNote.name);
+        if (documentRef.current) {
+          documentRef.current.innerHTML = newCurrentNote.content;
+          documentRef.current.focus();
+        }
+      } else if (noteId === currentNoteId && updatedNotes.length === 0) {
+        // if there are no more notes, clear current note state
+        // next useEffect will create new node
+        setCurrentNoteId("");
+        setNoteName("");
+        if (documentRef.current) {
+          documentRef.current.innerHTML = "";
+        }
+      }
+      return updatedNotes;
+    });
   };
+
+  // waits for the notes list to hit 0
+  useEffect(() => {
+    if (notes.length === 0) {
+      createNewNote();
+    }
+  }, [notes, createNewNote]);
 
   // generally keeps the document and toolbar components synched
   useEffect(() => {
@@ -208,24 +294,41 @@ function NotesPage() {
     };
   }, [updateActiveFormats]);
 
-  // loads saved note content from firebase when page loads
+  // updatea the local notes array and ensures the first note loads on entry
   useEffect(() => {
     if (!currentUser) return;
 
-    const noteRef = ref(database, `notes/${currentUser.uid}`);
-    onValue(
-      noteRef,
-      (snapshot) => {
-        const data = snapshot.val();
-        if (data && documentRef.current) {
-          documentRef.current.innerHTML = data;
-        }
-      },
-      { onlyOnce: true },
-    );
-  }, [currentUser]);
+    const notesRef = ref(database, `notes/${currentUser.uid}`);
+    onValue(notesRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        // convert the object to an array of notes
+        const loadedNotes = Object.entries(data).map(([key, value]) => ({
+          id: key,
+          ...value,
+        }));
+        setNotes(loadedNotes);
 
-  // saves document content to firebase on DOM changes after 10 seconds
+        // check if the current note exists in the loaded notes
+        const current = loadedNotes.find((note) => note.id === currentNoteId);
+        if (!current && loadedNotes.length > 0) {
+          // if no valid current note is found, set the first note as current
+          setCurrentNoteId(loadedNotes[0].id);
+          setNoteName(loadedNotes[0].name);
+
+          if (
+            documentRef.current &&
+            document.activeElement !== documentRef.current
+          ) {
+            documentRef.current.innerHTML = loadedNotes[0].content || "";
+          }
+        }
+      }
+    });
+  }, [currentUser, currentNoteId]);
+
+  // saves document content to firebase on DOM changes every 5 seconds
+  // Also update the local notes state for the active note.
   useEffect(() => {
     if (!documentRef.current || !currentUser) return;
 
@@ -254,7 +357,7 @@ function NotesPage() {
           content: content,
           lastSaved: new Date().toISOString(),
         });
-      }, 10000); // 10 seconds
+      }, 5000); // 5 seconds
     });
 
     observer.observe(documentRef.current, {
@@ -289,6 +392,7 @@ function NotesPage() {
         onNoteChange={onNoteChange}
         createNewNote={createNewNote}
         setNoteName={updateNoteName}
+        deleteNote={deleteNote}
       />
       <div
         contentEditable="true"

@@ -106,6 +106,16 @@ class ToolBar extends React.Component {
                     {note.name}
                   </button>
                 )}
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    this.props.deleteNote(note.id);
+                  }}
+                  className="trash-button"
+                >
+                  <i className="bi bi-trash"></i>
+                </button>
               </li>
             ))}
             <li>
