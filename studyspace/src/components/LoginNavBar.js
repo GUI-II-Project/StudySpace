@@ -21,7 +21,6 @@ class LoginNavBar extends React.Component {
               </li>
             </ul>
           </div>
-          
         </nav>
       </div>
     );

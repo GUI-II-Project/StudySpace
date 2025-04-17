@@ -10,7 +10,6 @@ function LoginPage() {
         <LoginForm />
       </div>
     </div>
-
   );
 }
 

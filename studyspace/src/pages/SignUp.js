@@ -7,11 +7,9 @@ function SignUpPage() {
     <div>
       <LoginNavBar />
       <div className="vh-100 d-flex justify-content-center align-items-center">
-      <SignUpForm />
+        <SignUpForm />
+      </div>
     </div>
-
-    </div>
-
   );
 }
 
