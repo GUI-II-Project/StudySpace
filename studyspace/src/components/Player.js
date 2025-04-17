@@ -31,10 +31,11 @@ const Player = () => {
         width: 350,
         height: 350,
       }}
+      style={{marginBottom: "2rem"}}
     >
       <div className="player-container">
         <div className="player-header">
-          <h6>Media</h6>
+          <h6>Media Player</h6>
         </div>
         {error && <p>{error}</p>}
         <div className="player-cmp" style={{}}>

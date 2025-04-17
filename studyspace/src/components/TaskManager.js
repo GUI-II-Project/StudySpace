@@ -72,7 +72,6 @@ function TaskManager({ compact }) {
 
   return (
     <div>
-      <div className="page-container">
         <TaskList
           tasks={tasks}
           onAddTask={addTask}
@@ -82,7 +81,6 @@ function TaskManager({ compact }) {
           onCheckTask={checkTask}
           compact={compact}
         />
-      </div>
     </div>
   );
 }
