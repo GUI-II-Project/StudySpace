@@ -370,23 +370,6 @@ function NotesPage() {
     };
   }, [currentUser, currentNoteId, noteName]);
 
-  useEffect(() => {
-    if (!currentUser) return;
-
-    // turns the notes[] into an object keyed by id, filtering out any bad entries
-    const notesObj = notes.reduce((acc, note) => {
-      if (!note.id || typeof note.name !== "string") return acc;
-      acc[note.id] = {
-        name: note.name,
-        content: note.content ?? "",
-        lastSaved: note.lastSaved ?? new Date().toISOString(),
-      };
-      return acc;
-    }, {});
-
-    set(ref(database, `notes/${currentUser.uid}`), notesObj);
-  }, [notes, currentUser]);
-
   return (
     <div style={{ position: "relative", minHeight: "100vh" }}>
       <NavBar />
