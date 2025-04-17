@@ -31,7 +31,7 @@ const Player = () => {
         width: 350,
         height: 350,
       }}
-      style={{marginBottom: "2rem"}}
+      style={{ marginBottom: "2rem" }}
     >
       <div className="player-container">
         <div className="player-header">

@@ -72,15 +72,15 @@ function TaskManager({ compact }) {
 
   return (
     <div>
-        <TaskList
-          tasks={tasks}
-          onAddTask={addTask}
-          onEditTask={editTask}
-          onDeleteTask={deleteTask}
-          onAddDeadline={addDeadline}
-          onCheckTask={checkTask}
-          compact={compact}
-        />
+      <TaskList
+        tasks={tasks}
+        onAddTask={addTask}
+        onEditTask={editTask}
+        onDeleteTask={deleteTask}
+        onAddDeadline={addDeadline}
+        onCheckTask={checkTask}
+        compact={compact}
+      />
     </div>
   );
 }
