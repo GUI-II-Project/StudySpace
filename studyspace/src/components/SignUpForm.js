@@ -8,6 +8,10 @@ function SignUpForm() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  function handleLoginClick() {
+    navigate("/login");
+  }
+
   function handleSignUp(e) {
     e.preventDefault();
 
@@ -36,7 +40,7 @@ function SignUpForm() {
       style={{ maxWidth: "400px" }}
       onSubmit={handleSignUp}
     >
-      <h2 className="text-white text-center mb-4">Create Account</h2>
+      <h2 className="text-white text-center mb-4">Create an Account</h2>
 
       {error && <div className="alert alert-danger">{error}</div>}
 
@@ -67,7 +71,18 @@ function SignUpForm() {
         onChange={(e) => setConfirmPassword(e.target.value)}
       />
 
-      <button className="btn btn-primary w-100">Sign Up</button>
+      <button className="btn btn-dark w-100">Sign Up</button>
+
+      <p className="text-center text-light" style={{ marginTop: "3rem" }}>
+        Already have an account?{" "}
+        <span
+          className="fw-bold text-decoration-underline"
+          style={{ cursor: "pointer" }}
+          onClick={handleLoginClick}
+        >
+          Log in
+        </span>
+      </p>
     </form>
   );
 }

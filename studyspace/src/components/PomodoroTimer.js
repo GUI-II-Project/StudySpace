@@ -48,7 +48,11 @@ const PomodoroTimer = () => {
   return (
     <div
       class="card text-white text-start"
-      style={{ width: "25rem", backgroundColor: "#212B58" }}
+      style={{
+        width: "25rem",
+        backgroundColor: "#212B58",
+        marginBottom: "2rem",
+      }}
     >
       <div class="card-body">
         <h5 class="card-title">Pomodoro timer</h5>
