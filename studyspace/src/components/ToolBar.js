@@ -5,85 +5,223 @@ class ToolBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      // only allow renaming for the active note
       editingActiveNote: false,
       editedNoteName: "",
+      compact: window.innerWidth <= 640,
     };
   }
 
-  handleIncreaseFont = () => {
-    const newSize = Math.min(7, Number(this.props.fontSize) + 1).toString();
-    this.props.onFontSizeChange(newSize);
+  componentDidMount() {
+    window.addEventListener("resize", this.handleResize);
+  }
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.handleResize);
+  }
+
+  // this whole thing hinges on this 'compact' variable
+  handleResize = () => {
+    const compact = window.innerWidth <= 745;
+    if (compact !== this.state.compact) this.setState({ compact });
   };
 
-  // Decrease the font size value, ensuring it doesn't go below 1
-  handleDecreaseFont = () => {
-    const newSize = Math.max(1, Number(this.props.fontSize) - 1).toString();
-    this.props.onFontSizeChange(newSize);
-  };
+  incFont = () =>
+    this.props.onFontSizeChange(
+      Math.min(7, +this.props.fontSize + 1).toString(),
+    );
+  decFont = () =>
+    this.props.onFontSizeChange(
+      Math.max(1, +this.props.fontSize - 1).toString(),
+    );
+
+  // shared function for mobile dropdowns
+  renderDropdown(icon, items) {
+    const { onFormat } = this.props;
+    const { toolProps } = this;
+    return (
+      <div className="dropdown">
+        <button
+          className="tool"
+          type="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+          {...toolProps}
+        >
+          <span className={`bi ${icon}`}></span>
+        </button>
+        <ul
+          className="dropdown-menu"
+          style={{ "--bs-dropdown-min-width": "0" }}
+          data-bs-auto-close="false"
+        >
+          {items.map((it) => (
+            <li key={it.cmd}>
+              <button
+                className="dropdown-item tool"
+                onClick={() => onFormat(it.cmd)}
+              >
+                {it.icon && <span className={`bi ${it.icon}`}></span>}
+                {it.label}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
+  }
+
+  // if compact, build dropdown, otherwise do normal
+  renderFormatGroup() {
+    const { compact } = this.state;
+    const { onFormat, activeFormats } = this.props;
+    if (!compact)
+      return ["bold", "italic", "underline"].map((cmd) => (
+        <button
+          key={cmd}
+          className={`tool ${activeFormats[cmd] ? "active" : ""}`}
+          onClick={() => onFormat(cmd)}
+          onMouseDown={(e) => e.preventDefault()}
+          {...this.toolProps}
+        >
+          <span
+            className={`bi bi-type-${
+              cmd === "bold"
+                ? "bold"
+                : cmd === "italic"
+                  ? "italic"
+                  : "underline"
+            }`}
+          ></span>
+        </button>
+      ));
+    return this.renderDropdown("bi-type", [
+      { icon: "bi-type-bold", cmd: "bold" },
+      { icon: "bi-type-italic", cmd: "italic" },
+      { icon: "bi-type-underline", cmd: "underline" },
+    ]);
+  }
+
+  // if compact, build dropdown, otherwise do normal
+  renderAlignGroup() {
+    const { compact } = this.state;
+    const { onFormat } = this.props;
+    if (!compact)
+      return [
+        { icon: "bi-text-left", cmd: "justifyLeft" },
+        { icon: "bi-text-center", cmd: "justifyCenter" },
+        { icon: "bi-text-right", cmd: "justifyRight" },
+      ].map((b) => (
+        <button
+          key={b.cmd}
+          className="tool"
+          onClick={() => onFormat(b.cmd)}
+          onMouseDown={(e) => e.preventDefault()}
+          {...this.toolProps}
+        >
+          <span className={`bi ${b.icon}`}></span>
+        </button>
+      ));
+    return this.renderDropdown("bi-text-left", [
+      { icon: "bi-text-left", cmd: "justifyLeft" },
+      { icon: "bi-text-center", cmd: "justifyCenter" },
+      { icon: "bi-text-right", cmd: "justifyRight" },
+    ]);
+  }
+
+  // if compact, build dropdown, otherwise do normal
+  renderListGroup() {
+    const { compact } = this.state;
+    const { onFormat } = this.props;
+    if (!compact)
+      return [
+        { icon: "bi-list-ul", cmd: "insertUnorderedList" },
+        { icon: "bi-list-ol", cmd: "insertOrderedList" },
+      ].map((b) => (
+        <button
+          key={b.cmd}
+          className="tool"
+          onClick={() => onFormat(b.cmd)}
+          onMouseDown={(e) => e.preventDefault()}
+          {...this.toolProps}
+        >
+          <span className={`bi ${b.icon}`}></span>
+        </button>
+      ));
+    return this.renderDropdown("bi-list-ul", [
+      { icon: "bi-list-ul", cmd: "insertUnorderedList" },
+      { icon: "bi-list-ol", cmd: "insertOrderedList" },
+    ]);
+  }
 
   render() {
     const {
+      notes,
+      currentNoteId,
+      createNewNote,
+      onNoteChange,
+      deleteNote,
+      setNoteName,
+      downloadDocx,
+      downloadPdf,
       onFormat,
-      activeFormats,
       fontSize,
       onFontSizeChange,
       fontColor,
       onFontColorChange,
+      selectedFont,
+      onFontChange,
     } = this.props;
+
+    const { compact } = this.state;
+
+    // if compact, no margin, otherwise, do normal
+    this.toolProps = compact ? { style: { margin: "0" } } : {};
+
     return (
-      <div className="format-bar d-flex align-items-center justify-content-center">
+      <div
+        className="format-bar d-flex align-items-center justify-content-center"
+        // makes toolbar smaller to fit mobile view
+        style={{ maxWidth: compact ? 395 : 775 }}
+      >
         <div className="format-buttons m-0 px-2 d-flex align-items-center justify-content-center">
+          {/* Note dropdown */}
           <button
             className="tool"
             type="button"
             data-bs-toggle="dropdown"
             aria-expanded="false"
+            {...this.toolProps}
           >
-            <i className="bi bi-plus-circle"></i>
+            <span className="bi bi-plus-circle"></span>
           </button>
           <ul className="dropdown-menu" data-bs-auto-close="false">
-            {/* list out each note */}
-            {this.props.notes.map((note) => (
-              <li key={note.id}>
-                {note.id === this.props.currentNoteId ? (
-                  // this is the active note. allows renaming if clicked.
+            {notes.map((note) => (
+              <li key={note.id} className="w-120 d-flex align-items-center">
+                {note.id === currentNoteId ? (
                   this.state.editingActiveNote ? (
                     <input
-                      type="text"
                       className="form-control"
                       value={this.state.editedNoteName}
+                      autoFocus
                       onChange={(e) =>
                         this.setState({ editedNoteName: e.target.value })
                       }
                       onBlur={() => {
-                        // if it user clicks out
                         this.setState({ editingActiveNote: false });
-                        // pass the updated name back to the NotesPage.js
-                        this.props.setNoteName(
-                          note.id,
-                          this.state.editedNoteName,
-                        );
+                        setNoteName(note.id, this.state.editedNoteName);
                       }}
                       onKeyDown={(e) => {
-                        // if user presses enter
                         if (e.key === "Enter") {
                           e.preventDefault();
                           this.setState({ editingActiveNote: false });
-                          this.props.setNoteName(
-                            note.id,
-                            this.state.editedNoteName,
-                          );
+                          setNoteName(note.id, this.state.editedNoteName);
                         }
                       }}
-                      autoFocus
                     />
                   ) : (
                     <button
                       className="dropdown-item active"
                       style={{ cursor: "text", backgroundColor: "#dbca49" }}
                       onClick={(e) => {
-                        // when clicking the active note, edit name
                         e.preventDefault();
                         e.stopPropagation();
                         this.setState({
@@ -96,84 +234,75 @@ class ToolBar extends React.Component {
                     </button>
                   )
                 ) : (
-                  // inactive notes. clicking them switches the active note
                   <button
                     className="dropdown-item"
-                    onClick={(e) => {
-                      this.props.onNoteChange(note.id);
-                    }}
+                    onClick={() => onNoteChange(note.id)}
                   >
                     {note.name}
                   </button>
                 )}
                 <button
+                  className="trash-button ms-1"
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    this.props.deleteNote(note.id);
+                    deleteNote(note.id);
                   }}
-                  className="trash-button"
                 >
-                  <i className="bi bi-trash"></i>
+                  <span className="bi bi-trash"></span>
                 </button>
               </li>
             ))}
             <li>
-              <button
-                className="dropdown-item"
-                onClick={(e) => {
-                  this.props.createNewNote();
-                }}
-              >
+              <button className="dropdown-item" onClick={createNewNote}>
                 <u>New Note</u>
               </button>
             </li>
           </ul>
-
+          {/* download */}
           <button
             className="tool"
             type="button"
-            id="downloadDropdown"
             data-bs-toggle="dropdown"
             aria-expanded="false"
+            {...this.toolProps}
           >
-            <i className="bi bi-download"></i>
+            <span className="bi bi-download"></span>
           </button>
-          <ul className="dropdown-menu" aria-labelledby="downloadDropdown">
+          <ul className="dropdown-menu">
             <li>
-              <button
-                className="dropdown-item"
-                onClick={this.props.downloadDocx}
-              >
+              <button className="dropdown-item" onClick={downloadDocx}>
                 MS Word (.docx)
               </button>
             </li>
             <li>
-              <button
-                className="dropdown-item"
-                onClick={this.props.downloadPdf}
-              >
+              <button className="dropdown-item" onClick={downloadPdf}>
                 PDF Document (.pdf)
               </button>
             </li>
           </ul>
+
+          {/* undo/redo */}
           <button
             className="tool"
             onClick={() => onFormat("undo")}
             onMouseDown={(e) => e.preventDefault()}
           >
-            <i className="bi bi-arrow-counterclockwise"></i>
+            <span className="bi bi-arrow-counterclockwise"></span>
           </button>
           <button
             className="tool"
             onClick={() => onFormat("redo")}
             onMouseDown={(e) => e.preventDefault()}
           >
-            <i className="bi bi-arrow-clockwise"></i>
+            <span className="bi bi-arrow-clockwise"></span>
           </button>
+
+          {/* font family select */}
           <select
-            value={this.props.selectedFont}
-            onChange={(e) => this.props.onFontChange(e.target.value)}
+            className={`${compact ? "compact" : ""}`}
+            value={selectedFont}
+            onChange={(e) => onFontChange(e.target.value)}
           >
             <option value="Arial">Arial</option>
             <option value="'Times New Roman', Times, serif">
@@ -183,89 +312,60 @@ class ToolBar extends React.Component {
             <option value="Georgia">Georgia</option>
             <option value="Inter">Inter</option>
           </select>
-          <button
-            className={`tool ${activeFormats.bold ? "active" : ""}`}
-            onClick={() => onFormat("bold")}
-            onMouseDown={(e) => e.preventDefault()}
-          >
-            <i className="bi bi-type-bold"></i>
-          </button>
-          <button
-            className={`tool ${activeFormats.italic ? "active" : ""}`}
-            onClick={() => onFormat("italic")}
-            onMouseDown={(e) => e.preventDefault()}
-          >
-            <i className="bi bi-type-italic"></i>
-          </button>
-          <button
-            className={`tool ${activeFormats.underline ? "active" : ""}`}
-            onClick={() => onFormat("underline")}
-            onMouseDown={(e) => e.preventDefault()}
-          >
-            <i className="bi bi-type-underline"></i>
-          </button>
+
+          {/* format group */}
+          {this.renderFormatGroup()}
+
+          {/* color */}
           <input
             type="color"
             className="tool circular"
             value={fontColor}
             onChange={(e) => onFontColorChange(e.target.value)}
-            title="Change font color"
           />
-          <div id="size">
-            <button className="tool" onClick={this.handleDecreaseFont}>
-              <i className="bi bi-dash"></i>
+
+          {/* font size block */}
+          <div id="size" style={{ width: compact ? 43 : 130 }}>
+            <button
+              className={`tool ${compact ? "d-none" : ""}`}
+              onClick={this.decFont}
+            >
+              <span className="bi bi-dash"></span>
             </button>
             <select
-              onChange={(e) => onFontSizeChange(e.target.value)}
+              className={`${compact ? "compact" : ""}`}
               value={fontSize}
+              onChange={(e) => onFontSizeChange(e.target.value)}
             >
-              <option value="1">xxsmall</option>
-              <option value="2">xsmall</option>
-              <option value="3">small</option>
-              <option value="4">medium</option>
-              <option value="5">large</option>
-              <option value="6">xlarge</option>
-              <option value="7">xxlarge</option>
+              {[1, 2, 3, 4, 5, 6, 7].map((n) => (
+                <option key={n} value={n}>
+                  {
+                    [
+                      "xxsmall",
+                      "xsmall",
+                      "small",
+                      "medium",
+                      "large",
+                      "xlarge",
+                      "xxlarge",
+                    ][n - 1]
+                  }
+                </option>
+              ))}
             </select>
-            <button className="tool" onClick={this.handleIncreaseFont}>
-              <i className="bi bi-plus"></i>
+            <button
+              className={`tool ${compact ? "d-none" : ""}`}
+              onClick={this.incFont}
+            >
+              <span className="bi bi-plus"></span>
             </button>
           </div>
-          <button
-            className="tool"
-            onClick={() => onFormat("justifyLeft")}
-            onMouseDown={(e) => e.preventDefault()}
-          >
-            <i className="bi bi-text-left"></i>
-          </button>
-          <button
-            className="tool"
-            onClick={() => onFormat("justifyCenter")}
-            onMouseDown={(e) => e.preventDefault()}
-          >
-            <i className="bi bi-text-center"></i>
-          </button>
-          <button
-            className="tool"
-            onClick={() => onFormat("justifyRight")}
-            onMouseDown={(e) => e.preventDefault()}
-          >
-            <i className="bi bi-text-right"></i>
-          </button>
-          <button
-            className="tool"
-            onClick={() => onFormat("insertUnorderedList")}
-            onMouseDown={(e) => e.preventDefault()}
-          >
-            <i className="bi bi-list-ul"></i>
-          </button>
-          <button
-            className="tool"
-            onClick={() => onFormat("insertOrderedList")}
-            onMouseDown={(e) => e.preventDefault()}
-          >
-            <i className="bi bi-list-ol"></i>
-          </button>
+
+          {/* alignment group */}
+          {this.renderAlignGroup()}
+
+          {/* list group */}
+          {this.renderListGroup()}
         </div>
       </div>
     );

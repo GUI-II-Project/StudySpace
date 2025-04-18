@@ -49,7 +49,7 @@ const PomodoroTimer = () => {
     <div
       class="card text-white text-start"
       style={{
-        width: "25rem",
+        width: "20rem",
         backgroundColor: "#212B58",
         marginBottom: "2rem",
       }}

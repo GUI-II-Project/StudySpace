@@ -15,7 +15,7 @@ root.render(
         <App />
       </AuthProvider>
     </GoogleOAuthProvider>
-  </React.StrictMode>
+  </React.StrictMode>,
 );
 
 reportWebVitals();

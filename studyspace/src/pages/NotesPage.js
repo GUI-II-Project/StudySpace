@@ -4,6 +4,7 @@ import htmlDocx from "html-docx-js/dist/html-docx";
 import { jsPDF } from "jspdf";
 import NavBar from "../components/NavBar.js";
 import ToolBar from "../components/ToolBar.js";
+import Document from "../components/Document.js";
 import { database } from "../configuration.jsx";
 import { ref, onValue, set, remove } from "firebase/database";
 import { useAuth } from "../context/AuthContext";
@@ -128,8 +129,10 @@ function NotesPage() {
     if (documentRef.current) {
       // save the original background style
       const originalBackground = documentRef.current.style.backgroundColor;
+      const originalWidth = documentRef.current.style.width;
       // temporarily set a white background
       documentRef.current.style.backgroundColor = "#ffffff";
+      documentRef.current.style.width = "820px";
 
       const pdf = new jsPDF("p", "pt", "a4");
       pdf.html(documentRef.current, {
@@ -137,6 +140,7 @@ function NotesPage() {
           pdf.save(`${noteName}.pdf`);
           // revert background style
           documentRef.current.style.backgroundColor = originalBackground;
+          documentRef.current.style.width = originalWidth;
         },
         html2canvas: {
           scale: 0.725, // makes the download the proper size
@@ -333,6 +337,8 @@ function NotesPage() {
     let saveTimeout = null;
 
     const observer = new MutationObserver(() => {
+      setLastSaved(null);
+
       if (saveTimeout) clearTimeout(saveTimeout);
 
       saveTimeout = setTimeout(() => {
@@ -371,7 +377,9 @@ function NotesPage() {
   }, [currentUser, currentNoteId, noteName]);
 
   return (
-    <div style={{ position: "relative", minHeight: "100vh" }}>
+    <div
+      style={{ position: "relative", minHeight: "100vh", overflowX: "hidden" }}
+    >
       <NavBar />
       <ToolBar
         onFormat={handleFormat}
@@ -392,12 +400,7 @@ function NotesPage() {
         setNoteName={updateNoteName}
         deleteNote={deleteNote}
       />
-      <div
-        contentEditable="true"
-        className="editor"
-        ref={documentRef}
-        suppressContentEditableWarning={true}
-      ></div>
+      <Document documentRef={documentRef} />
       <div
         style={{
           position: "fixed",
