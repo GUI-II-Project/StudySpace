@@ -38,7 +38,7 @@ function Sidebar() {
             aria-label="Close"
           ></button>
         </div>
-        <div class="offcanvas-body">
+        <div class="offcanvas-body" style={{ overflowX: "hidden" }}>
           <PomodoroTimer />
           <Player />
           <TaskManager compact />

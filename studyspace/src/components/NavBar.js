@@ -27,11 +27,6 @@ function NavBar() {
       </Link>
       <ul className="navbar-nav" style={{ width: "100%" }}>
         <li className="nav-item main-nav-item">
-          <Link className="nav-link text-white" to="/home">
-            Home
-          </Link>
-        </li>
-        <li className="nav-item main-nav-item">
           <Link className="nav-link text-white" to="/notes">
             Notes
           </Link>
@@ -49,7 +44,7 @@ function NavBar() {
       </ul>
       <button
         id="logout-button"
-        className="btn btn-outline-light ms-auto"
+        className="btn d-flex align-items-center justify-content-center btn-outline-light ms-auto"
         onClick={handleLogout}
       >
         Logout
