@@ -93,7 +93,7 @@ class ToolBar extends React.Component {
           ></span>
         </button>
       ));
-    return this.renderDropdown("bi-type", [
+    return this.renderDropdown("bi-type-bold", [
       { icon: "bi-type-bold", cmd: "bold" },
       { icon: "bi-type-italic", cmd: "italic" },
       { icon: "bi-type-underline", cmd: "underline" },
