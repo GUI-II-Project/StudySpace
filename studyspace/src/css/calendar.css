@@ -10,18 +10,14 @@
     width: 90%;
     max-width: 900px;
     background: #212b58e6;
-    /* dark-blue, 75% opacity */
     border-radius: 10px;
     border: 2px solid #4c5166e6;
     backdrop-filter: blur(8px);
-    /* frosted‑glass effect */
     box-shadow: 0 8px 32px #0000004d;
     padding: 30px;
     color: white;
-    /* light‑gray text */
 }
 
-/* === Header (title + date) === */
 .calendar-card .card-header {
     display: flex;
     justify-content: space-between;
@@ -39,7 +35,6 @@
     color: #cbd5e1;
 }
 
-/* === FullCalendar overrides === */
 .calendar-card .fc {
     background: transparent;
     color: white;
@@ -68,7 +63,6 @@
 
 .calendar-card .fc .fc-event {
     background: #f4c425 !important;
-    /* bright-blue event pill */
     color: #192247 !important;
     border-radius: 5px !important;
     font-weight: 500;
