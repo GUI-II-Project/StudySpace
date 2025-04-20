@@ -1,0 +1,154 @@
+/* === Layout === */
+.calendar-page {
+    display: flex;
+    justify-content: center;
+    padding: 0;
+}
+
+.calendar-card {
+    position: relative;
+    width: 90%;
+    max-width: 900px;
+    background: #212b58e6;
+    border-radius: 10px;
+    border: 2px solid #4c5166e6;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 8px 32px #0000004d;
+    padding: 30px;
+    color: white;
+}
+
+.calendar-card .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.calendar-card .card-header h2 {
+    margin: 0;
+    color: #f8fafc;
+}
+
+.calendar-card .card-date {
+    font-size: 19px;
+    color: #cbd5e1;
+}
+
+.calendar-card .fc {
+    background: transparent;
+    color: white;
+}
+
+.calendar-card .fc .fc-toolbar {
+    background: transparent;
+    margin-bottom: 20px;
+}
+
+.calendar-card .fc .fc-button {
+    background: #cbd5e11a;
+    border: none;
+    color: white;
+    border-radius: 5px;
+}
+
+.calendar-card .fc .fc-button:hover {
+    background: #cbd5e133;
+}
+
+.calendar-card .fc .fc-daygrid-day-top,
+.calendar-card .fc .fc-daygrid-day-number {
+    color: #cbd5e1;
+}
+
+.calendar-card .fc .fc-event {
+    background: #f4c425 !important;
+    color: #192247 !important;
+    border-radius: 5px !important;
+    font-weight: 500;
+}
+
+.calendar-card .fc .fc-day-today {
+    background: #4986e96b !important;
+}
+
+.calendar-card .fc .fc-day-today:hover {
+    background: #2c61b66b !important;
+}
+
+.calendar-card .fc .fc-daygrid-day-frame:hover {
+    background-color: #394a97e6;
+    cursor: pointer;
+}
+
+a {
+    color: #cbd5e1;
+    cursor: default;
+}
+
+.event-dialog {
+    background-color: #212b58e6;
+    border-radius: 10px;
+    border: 2px solid #4c5166e6;
+    backdrop-filter: blur(8px);
+}
+
+.event-dialog h3 {
+    color: white;
+}
+
+
+.event-dialog::backdrop {
+    background: #00000080;
+}
+
+.event-dialog form {
+    display: flex;
+    flex-direction: column;
+}
+
+.event-dialog label {
+    margin-bottom: 15px;
+    font-size: 20px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.event-dialog input {
+    display: flex;
+    justify-content: center;
+    width: 50%;
+    margin-top: 5px;
+    margin-right: auto;
+    margin-left: auto;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #4c5166e6;
+    background: #D7D7D7;
+    color: #000000;
+    cursor: text;
+}
+
+.event-dialog menu {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 1rem;
+}
+
+.event-dialog button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.event-dialog button:hover {
+    background-color: #ff0000bb;
+}
+
+.event-dialog button:first-child:hover {
+    background-color: #15ff00bb;
+}
