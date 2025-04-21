@@ -1,18 +1,20 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../configuration.jsx";
+import { auth } from "../configuration.jsx"; // firebase config and auth export
 
 function SignUpForm() {
-  const [email, setEmail] = useState(""); // changed from username
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState("");
+  const [email, setEmail] = useState(""); // user email input
+  const [password, setPassword] = useState(""); // password input
+  const [confirmPassword, setConfirmPassword] = useState(""); // confirmation input
+  const [error, setError] = useState(""); // error message
   const navigate = useNavigate();
 
+  // handles form submission and Firebase signup
   async function handleSignUp(e) {
     e.preventDefault();
 
+    // simple form validation
     if (!email || !password || !confirmPassword) {
       return setError("All fields are required.");
     }
@@ -22,8 +24,9 @@ function SignUpForm() {
     }
 
     try {
+      // register the user using Firebase Auth
       await createUserWithEmailAndPassword(auth, email, password);
-      navigate("/login");
+      navigate("/login"); // redirect to login after successful signup
     } catch (err) {
       console.error("Signup error:", err);
       if (err.code === "auth/email-already-in-use") {
@@ -42,6 +45,7 @@ function SignUpForm() {
     >
       <h2 className="text-white text-center mb-4">Create Account</h2>
 
+      {/* show error message if any */}
       {error && <div className="alert alert-danger">{error}</div>}
 
       <label className="form-label fs-5 text-white">Email</label>

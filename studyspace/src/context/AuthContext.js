@@ -1,18 +1,22 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 
+// Create a context to manage authentication state
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null);     // stores current logged-in user
+  const [loading, setLoading] = useState(true); // loading state to prevent flicker
 
   useEffect(() => {
+    // check if user is already logged in and keep session alive
     const auth = getAuth();
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
       setUser(firebaseUser);
       setLoading(false);
     });
+
+    // cleanup listener when component unmounts
     return () => unsubscribe();
   }, []);
 
@@ -34,6 +38,7 @@ export function AuthProvider({ children }) {
   );
 }
 
+// Custom hook to access the authentication context
 export function useAuth() {
   return useContext(AuthContext);
 }

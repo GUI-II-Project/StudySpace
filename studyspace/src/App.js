@@ -1,5 +1,11 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
+
 import LandingPage from "./pages/Landing";
 import NotesPage from "./pages/NotesPage";
 import Calendar from "./pages/Calendar";
@@ -7,26 +13,35 @@ import TaskListPage from "./pages/TaskListPage";
 import HomePage from "./pages/Home";
 import LoginPage from "./pages/Login";
 import SignUpPage from "./pages/SignUp";
+
 import Sidebar from "./components/Sidebar";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { AuthProvider } from "./context/AuthContext";
+
 import "./App.css";
 
 function App() {
   return (
-    <div className="App">
-      <AuthProvider>
-        <Router>
-          <AppRoutes />
-        </Router>
-      </AuthProvider>
-    </div>
+    <AuthProvider>
+      <Router>
+        <MainApp />
+      </Router>
+    </AuthProvider>
   );
 }
 
-function AppRoutes() {
+function MainApp() {
+  const location = useLocation();
+  const hideSidebarPaths = ["/", "/login", "/signup"];
+  const showSidebar = !hideSidebarPaths.includes(location.pathname);
+
   return (
-    <>
+    <div className="App">
+      {showSidebar && (
+        <div className="position-fixed bottom-0 end-0" style={{ padding: "2rem" }}>
+          <Sidebar />
+        </div>
+      )}
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
@@ -64,22 +79,6 @@ function AppRoutes() {
           }
         />
       </Routes>
-      <ShowSidebar />
-    </>
-  );
-}
-
-function ShowSidebar() {
-  const location = useLocation();
-  const hideSidebarPaths = ["/", "/login", "/signup"];
-
-  if (hideSidebarPaths.includes(location.pathname)) {
-    return null;
-  }
-
-  return (
-    <div className="position-fixed bottom-0 end-0" style={{ padding: "2rem" }}>
-      <Sidebar />
     </div>
   );
 }

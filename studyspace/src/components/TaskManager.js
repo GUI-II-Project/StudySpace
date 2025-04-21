@@ -15,15 +15,16 @@ function TaskManager({ compact }) {
   // Load tasks from Firebase when the component mounts
   useEffect(() => {
     if (!currentUser?.uid) return; // prevent read before auth is ready
-    const path = `tasks/${currentUser.uid}`;
+    const path = `tasks/${currentUser.uid}`; // database path per user
     const tasksRef = ref(database, path);
     console.log("Loading tasks from:", path);
+
     onValue(
       tasksRef,
       (snapshot) => {
         const data = snapshot.val();
         if (data) {
-          setTasks(data);
+          setTasks(data); // load existing tasks
         } else {
           setTasks([]); // handle case where user has no tasks yet
         }

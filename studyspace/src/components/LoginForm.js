@@ -2,16 +2,22 @@ import React, { useState } from "react";
 import { GoogleLogin } from "@react-oauth/google";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { signInWithEmailAndPassword, getAuth, signInWithCredential, GoogleAuthProvider } from "firebase/auth";
+import {
+  signInWithEmailAndPassword,
+  getAuth,
+  signInWithCredential,
+  GoogleAuthProvider,
+} from "firebase/auth";
 import { auth } from "../configuration.jsx"; // must export auth
 
 function LoginForm() {
-  const [email, setEmail] = useState(""); // changed from username
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [email, setEmail] = useState(""); // email input state
+  const [password, setPassword] = useState(""); // password input state
+  const [error, setError] = useState(""); // error message
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login } = useAuth(); // access login method from auth context
 
+  // handles login with email and password
   async function handleManualLogin(e) {
     e.preventDefault();
     if (!email || !password) {
@@ -21,19 +27,20 @@ function LoginForm() {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       login(userCredential.user); // store user in context
-      navigate("/home");
+      navigate("/home"); // redirect after login
     } catch (err) {
       console.error("Login error:", err);
       setError("Invalid email or password.");
     }
   }
 
+  // handles login using Google sign-in
   async function handleGoogleSuccess(credentialResponse) {
     try {
       const credential = GoogleAuthProvider.credential(credentialResponse.credential);
-      const authInstance = getAuth();
+      const authInstance = getAuth(); // get current auth instance
       const result = await signInWithCredential(authInstance, credential);
-      login(result.user); // this includes uid
+      login(result.user); // store user info from Google
       navigate("/home");
     } catch (err) {
       console.error("Google login failed:", err);
@@ -46,7 +53,7 @@ function LoginForm() {
   }
 
   function handleCreateAccountClick() {
-    navigate("/signup");
+    navigate("/signup"); // redirect to signup page
   }
 
   return (
@@ -73,12 +80,14 @@ function LoginForm() {
         onChange={(e) => setPassword(e.target.value)}
       />
 
+      {/* Show any login error */}
       {error && <div className="alert alert-danger">{error}</div>}
 
       <button type="submit" className="btn btn-dark w-100 mb-4">
         Login
       </button>
 
+      {/* Google login button */}
       <div className="d-flex justify-content-center mb-4">
         <GoogleLogin
           onSuccess={handleGoogleSuccess}
@@ -86,6 +95,7 @@ function LoginForm() {
         />
       </div>
 
+      {/* Link to sign up */}
       <p className="text-center text-light">
         New here?{" "}
         <span

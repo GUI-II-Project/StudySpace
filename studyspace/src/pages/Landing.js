@@ -3,12 +3,13 @@ import LandingNavBar from "../components/LandingNavBar";
 import logo_with_clouds from "../imgs/logo_with_clouds.png";
 import main_page from "../imgs/main_page.png";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../context/AuthContext"; // get user from auth context
 
 function LandingPage() {
   const { user } = useAuth(); // get user from context
   const navigate = useNavigate();
 
+  // if user is signed in, go to homepage, otherwise prompt login
   const handleGetStarted = () => {
     if (user) {
       navigate("/home");

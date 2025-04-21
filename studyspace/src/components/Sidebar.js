@@ -8,13 +8,14 @@ import { signOut } from "firebase/auth";
 import { auth } from "../configuration.jsx";
 
 function Sidebar() {
-  const { logout } = useAuth(); // now available
+  const { logout } = useAuth(); // now available from auth context
   const navigate = useNavigate();
 
+  // handles full logout from Firebase and context, then redirects
   const handleLogout = async () => {
     try {
       await signOut(auth); // firebase logout
-      logout(); // update context
+      logout(); // update app context
       navigate("/login");
     } catch (error) {
       console.error("Logout failed:", error);
@@ -62,7 +63,7 @@ function Sidebar() {
           <div>
             <PomodoroTimer />
             <Player />
-            <TaskManager compact />
+            <TaskManager compact /> {/* embedded version of TaskManager */}
           </div>
           <button
             onClick={handleLogout}

@@ -174,6 +174,7 @@ function NotesPage() {
       subtree: true,
     });
 
+    // clean up the observer when the component unmounts
     return () => {
       if (saveTimeout) clearTimeout(saveTimeout);
       observer.disconnect();
