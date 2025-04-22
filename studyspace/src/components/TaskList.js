@@ -12,6 +12,9 @@ function TaskList(props) {
   const [editingIndex, setEditingIndex] = useState(null);
   const [editedDescription, setEditedDescription] = useState("");
 
+  // State to track the dragged item
+  const [draggedIndex, setDraggedIndex] = useState(null);
+
   // Adds a task
   // check if input isnt empty
   function addTask() {
@@ -67,6 +70,45 @@ function TaskList(props) {
     // setEditedDescription("");
   }
 
+  // store the index of the dragged item
+  function handleDragStart(index) {
+    setDraggedIndex(index);
+  }
+
+  // Handle drag over
+  function handleDragOver(event) {
+    event.preventDefault();
+  }
+
+  // Handle drop
+  function handleDrop(index, event) {
+    event.preventDefault();
+    // index of dragged item
+    const fromIndex = draggedIndex;
+    // index of drop target
+    const toIndex = index;
+
+    // check if the item is dropped in a different index
+    if (fromIndex !== toIndex) {
+      // copy of the tasks array
+      const updatedTasks = [...props.tasks];
+      // remove the dragged tasks from its origional position
+      const [draggedTask] = updatedTasks.splice(fromIndex, 1);
+      // insert task at new position
+      updatedTasks.splice(toIndex, 0, draggedTask);
+      props.onReorderTasks(updatedTasks);
+    }
+
+    // clear the dragged index
+    setDraggedIndex(null);
+    event.currentTarget.classList.remove("dragging");
+  }
+
+  // Handle drag end
+  function handleDragEnd() {
+    setDraggedIndex(null);
+  }
+
   // Render the task list component to the page
   return (
     <div className={`task-list-container ${compact ? "compact" : ""}`}>
@@ -104,7 +146,16 @@ function TaskList(props) {
       {/* List of tasks */}
       <ul className="task-list">
         {props.tasks.map((task, index) => (
-          <li key={index} className="task-item">
+          <li
+            key={index}
+            className="task-item"
+            draggable={editingIndex !== index} // Disable dragging during editing
+            // dragging tasks
+            onDragStart={(e) => handleDragStart(index)}
+            onDragOver={(e) => handleDragOver(e)}
+            onDrop={(e) => handleDrop(index, e)}
+            onDragEnd={handleDragEnd}
+          >
             {/* Task description and controls */}
             <div className="task-content">
               {/* Edit button */}
