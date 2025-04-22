@@ -70,6 +70,11 @@ function TaskManager({ compact }) {
     setTasks(updatedTasks);
   };
 
+  // Reorder tasks after drag-and-drop
+  const reorderTasks = (updatedTasks) => {
+    setTasks(updatedTasks);
+  };
+
   return (
     <div>
       <TaskList
@@ -79,6 +84,7 @@ function TaskManager({ compact }) {
         onDeleteTask={deleteTask}
         onAddDeadline={addDeadline}
         onCheckTask={checkTask}
+        onReorderTasks={reorderTasks}
         compact={compact}
       />
     </div>
