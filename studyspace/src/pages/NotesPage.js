@@ -10,7 +10,9 @@ import { ref, onValue, set, remove } from "firebase/database";
 import { useAuth } from "../context/AuthContext";
 
 function NotesPage() {
-  const [notes, setNotes] = useState([{ id: "n1", name: "note1", content: "" }]);
+  const [notes, setNotes] = useState([
+    { id: "n1", name: "note1", content: "" },
+  ]);
   const [currentNoteId, setCurrentNoteId] = useState("n1");
   const [noteName, setNoteName] = useState("note1");
   const documentRef = useRef();
@@ -48,7 +50,9 @@ function NotesPage() {
     setFontSize((document.queryCommandValue("fontSize") || "3").toString());
     let currentFontColor = document.queryCommandValue("foreColor") || "#000000";
     setFontColor(rgbToHex(currentFontColor));
-    setSelectedFont((document.queryCommandValue("fontName") || "Arial").replace(/"/g, "'"));
+    setSelectedFont(
+      (document.queryCommandValue("fontName") || "Arial").replace(/"/g, "'"),
+    );
   }, []);
 
   const handleFontSizeChange = (newSize) => {
@@ -74,7 +78,10 @@ function NotesPage() {
   const downloadDocx = () => {
     if (!documentRef.current) return;
     const content = documentRef.current.innerHTML;
-    const html = "<html><head><meta charset='utf-8'><title>Document</title></head><body>" + content + "</body></html>";
+    const html =
+      "<html><head><meta charset='utf-8'><title>Document</title></head><body>" +
+      content +
+      "</body></html>";
     const converted = htmlDocx.asBlob(html);
     saveAs(converted, noteName + ".docx");
   };
@@ -111,8 +118,8 @@ function NotesPage() {
   const updateNoteName = (noteId, newName) => {
     setNotes((prev) =>
       prev.map((note) =>
-        note.id === noteId ? { ...note, name: newName || "" } : note
-      )
+        note.id === noteId ? { ...note, name: newName || "" } : note,
+      ),
     );
     if (noteId === currentNoteId) {
       setNoteName(newName);
@@ -130,7 +137,8 @@ function NotesPage() {
   const getNextNoteNumber = useCallback(() => {
     const numbers = notes
       .map((note) => {
-        const m = typeof note.name === "string" && note.name.match(/^note(\d+)$/);
+        const m =
+          typeof note.name === "string" && note.name.match(/^note(\d+)$/);
         return m ? +m[1] : 0;
       })
       .filter((n) => n > 0);
@@ -160,7 +168,9 @@ function NotesPage() {
 
   const deleteNote = (noteId) => {
     if (currentUser) {
-      remove(ref(database, `notes/${currentUser.uid}/${noteId}`)).catch(console.error);
+      remove(ref(database, `notes/${currentUser.uid}/${noteId}`)).catch(
+        console.error,
+      );
     }
     const updated = notes.filter((n) => n.id !== noteId);
     if (updated.length === 0) {
@@ -221,8 +231,8 @@ function NotesPage() {
         const content = documentRef.current.innerHTML;
         setNotes((prev) =>
           prev.map((note) =>
-            note.id === currentNoteId ? { ...note, content } : note
-          )
+            note.id === currentNoteId ? { ...note, content } : note,
+          ),
         );
         setLastSaved(new Date());
         set(ref(database, `notes/${currentUser.uid}/${currentNoteId}`), {
@@ -244,7 +254,9 @@ function NotesPage() {
   }, [currentUser, currentNoteId, noteName]);
 
   return (
-    <div style={{ position: "relative", minHeight: "100vh", overflowX: "hidden" }}>
+    <div
+      style={{ position: "relative", minHeight: "100vh", overflowX: "hidden" }}
+    >
       <NavBar />
       <ToolBar
         onFormat={handleFormat}
@@ -266,19 +278,23 @@ function NotesPage() {
         deleteNote={deleteNote}
       />
       <Document documentRef={documentRef} />
-      <div style={{
-        position: "fixed",
-        bottom: "6px",
-        left: "10px",
-        color: "white",
-        backgroundColor: "grey",
-        padding: "0px 4px",
-        borderRadius: "4px",
-        fontSize: "0.75rem",
-        opacity: 0.8,
-        pointerEvents: "none",
-      }}>
-        {lastSaved ? `Last saved at ${lastSaved.toLocaleTimeString()}` : "Not saved yet"}
+      <div
+        style={{
+          position: "fixed",
+          bottom: "6px",
+          left: "10px",
+          color: "white",
+          backgroundColor: "grey",
+          padding: "0px 4px",
+          borderRadius: "4px",
+          fontSize: "0.75rem",
+          opacity: 0.8,
+          pointerEvents: "none",
+        }}
+      >
+        {lastSaved
+          ? `Last saved at ${lastSaved.toLocaleTimeString()}`
+          : "Not saved yet"}
       </div>
     </div>
   );
@@ -288,7 +304,10 @@ function rgbToHex(rgb) {
   const result = rgb.match(/\d+/g);
   if (!result) return rgb;
   const [r, g, b] = result.map(Number);
-  return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase();
+  return (
+    "#" +
+    ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase()
+  );
 }
 
 export default NotesPage;

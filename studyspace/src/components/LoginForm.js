@@ -25,7 +25,11 @@ function LoginForm() {
     }
 
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password,
+      );
       login(userCredential.user); // store user in context
       navigate("/home");
     } catch (err) {
@@ -37,7 +41,9 @@ function LoginForm() {
   // handles login using firebase Google credentials
   async function handleGoogleSuccess(credentialResponse) {
     try {
-      const credential = GoogleAuthProvider.credential(credentialResponse.credential);
+      const credential = GoogleAuthProvider.credential(
+        credentialResponse.credential,
+      );
       const authInstance = getAuth();
       const result = await signInWithCredential(authInstance, credential);
       login(result.user); // update auth context

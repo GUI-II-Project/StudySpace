@@ -4,14 +4,14 @@ import { getAuth, onAuthStateChanged, signOut } from "firebase/auth"; // added f
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);       // stores the signed in user
+  const [user, setUser] = useState(null); // stores the signed in user
   const [loading, setLoading] = useState(true); // controls initial loading state
 
   useEffect(() => {
     const auth = getAuth(); // get auth instance
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
-      setUser(firebaseUser);  // update user on login/logout
-      setLoading(false);      // show UI after auth is confirmed
+      setUser(firebaseUser); // update user on login/logout
+      setLoading(false); // show UI after auth is confirmed
     });
 
     return () => unsubscribe(); // stop listener on unmount

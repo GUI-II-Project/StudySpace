@@ -3,9 +3,9 @@ import Player from "./Player";
 import TaskManager from "./TaskManager.js";
 import { MdOutlineMenu } from "react-icons/md";
 import { useAuth } from "../context/AuthContext"; // added auth context for logout
-import { useNavigate } from "react-router-dom";   // added for redirecting after logout
-import { signOut } from "firebase/auth";          // firebase logout function
-import { auth } from "../configuration.jsx";      // firebase config
+import { useNavigate } from "react-router-dom"; // added for redirecting after logout
+import { signOut } from "firebase/auth"; // firebase logout function
+import { auth } from "../configuration.jsx"; // firebase config
 
 function Sidebar() {
   const { logout } = useAuth(); // access logout from auth context
@@ -15,8 +15,8 @@ function Sidebar() {
   const handleLogout = async () => {
     try {
       await signOut(auth); // firebase logout
-      logout();            // clear context
-      navigate("/login");  // redirect to login
+      logout(); // clear context
+      navigate("/login"); // redirect to login
     } catch (error) {
       console.error("logout failed:", error);
     }

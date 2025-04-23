@@ -34,7 +34,11 @@ function LandingPage() {
         <h4 style={{ paddingBottom: "2rem", fontSize: "2rem" }}>
           Get into flow state.
         </h4>
-        <button type="button" className="btn btn-dark" onClick={handleGetStarted}>
+        <button
+          type="button"
+          className="btn btn-dark"
+          onClick={handleGetStarted}
+        >
           Get started
         </button>
         <h5 style={{ paddingTop: "7rem" }}>
@@ -43,7 +47,9 @@ function LandingPage() {
       </div>
 
       {/* main image centered */}
-      <div style={{ marginTop: "2rem", display: "flex", justifyContent: "center" }}>
+      <div
+        style={{ marginTop: "2rem", display: "flex", justifyContent: "center" }}
+      >
         <img
           style={{ maxHeight: "500px", width: "100%", maxWidth: "900px" }}
           className="img-fluid"
