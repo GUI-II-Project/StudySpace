@@ -34,6 +34,8 @@ function SignUpForm() {
       console.error("signup error:", err);
       if (err.code === "auth/email-already-in-use") {
         setError("That email is already in use.");
+      } else if (err.code === "auth/weak-password") {
+        setError("Password should be at least 6 characters.");
       } else {
         setError("Failed to create account.");
       }
