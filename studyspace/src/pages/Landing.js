@@ -2,13 +2,26 @@ import React from "react";
 import LandingNavBar from "../components/LandingNavBar";
 import logo_with_clouds from "../imgs/logo_with_clouds.png";
 import main_page from "../imgs/main_page.png";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 function LandingPage() {
+  const { user } = useAuth(); // get current user from auth context
+  const navigate = useNavigate();
+
+  const handleGetStarted = () => {
+    if (user) {
+      navigate("/home");
+    } else {
+      navigate("/login");
+    }
+  };
+
   return (
     <div style={{ backgroundColor: "white", width: "100%" }}>
       <LandingNavBar />
-      <div style={{ marginTop: "4rem" }}>
+
+      <div style={{ marginTop: "4rem", textAlign: "center" }}>
         <h1
           style={{
             paddingBottom: "1rem",
@@ -21,19 +34,18 @@ function LandingPage() {
         <h4 style={{ paddingBottom: "2rem", fontSize: "2rem" }}>
           Get into flow state.
         </h4>
-        <button type="button" className="btn btn-dark">
-          <Link className="nav-link" to="/home">
-            Get started
-          </Link>
+        <button type="button" className="btn btn-dark" onClick={handleGetStarted}>
+          Get started
         </button>
         <h5 style={{ paddingTop: "7rem" }}>
           ✨ One workspace for all your study needs ✨
         </h5>
       </div>
 
-      <div style={{ marginTop: "2rem" }}>
+      {/* main image centered */}
+      <div style={{ marginTop: "2rem", display: "flex", justifyContent: "center" }}>
         <img
-          style={{ maxHeight: "500px" }}
+          style={{ maxHeight: "500px", width: "100%", maxWidth: "900px" }}
           className="img-fluid"
           src={main_page}
           alt="main_page"

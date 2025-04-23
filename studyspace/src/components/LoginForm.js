@@ -2,35 +2,50 @@ import React, { useState } from "react";
 import { GoogleLogin } from "@react-oauth/google";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { jwtDecode } from "jwt-decode";
+import {
+  signInWithEmailAndPassword,
+  getAuth,
+  signInWithCredential,
+  GoogleAuthProvider,
+} from "firebase/auth"; // firebase login functions
+import { auth } from "../configuration.jsx"; // firebase auth instance
 
 function LoginForm() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [email, setEmail] = useState(""); // email input state
+  const [password, setPassword] = useState(""); // password input state
+  const [error, setError] = useState(""); // error message
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login } = useAuth(); // access login method from auth context
 
-  function handleManualLogin(e) {
+  // handles firebase login with email and password
+  async function handleManualLogin(e) {
     e.preventDefault();
-    const users = JSON.parse(localStorage.getItem("users") || "{}");
-
-    if (!username || !password) {
+    if (!email || !password) {
       return setError("Please enter both fields.");
     }
 
-    if (!users[username] || users[username] !== password) {
-      return setError("Invalid username or password.");
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      login(userCredential.user); // store user in context
+      navigate("/home");
+    } catch (err) {
+      console.error("Login error:", err);
+      setError("Invalid email or password.");
     }
-
-    login({ username });
-    navigate("/home");
   }
 
-  function handleGoogleSuccess(credentialResponse) {
-    const decoded = jwtDecode(credentialResponse.credential);
-    login(decoded);
-    navigate("/home");
+  // handles login using firebase Google credentials
+  async function handleGoogleSuccess(credentialResponse) {
+    try {
+      const credential = GoogleAuthProvider.credential(credentialResponse.credential);
+      const authInstance = getAuth();
+      const result = await signInWithCredential(authInstance, credential);
+      login(result.user); // update auth context
+      navigate("/home");
+    } catch (err) {
+      console.error("Google login failed:", err);
+      setError("Google login failed. Try again.");
+    }
   }
 
   function handleGoogleError() {
@@ -38,7 +53,7 @@ function LoginForm() {
   }
 
   function handleCreateAccountClick() {
-    navigate("/signup");
+    navigate("/signup"); // redirect to signup
   }
 
   return (
@@ -49,13 +64,13 @@ function LoginForm() {
     >
       <h2 className="text-white text-center mb-4">Study Space</h2>
 
-      <label className="form-label fs-5 text-white">Username</label>
+      <label className="form-label fs-5 text-white">Email</label>
       <input
-        type="text"
-        placeholder="Username"
+        type="email"
+        placeholder="Email"
         className="form-control bg-dark bg-opacity-75 text-white border-light mb-3"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
       />
 
       <label className="form-label fs-5 text-white">Password</label>
@@ -67,12 +82,14 @@ function LoginForm() {
         onChange={(e) => setPassword(e.target.value)}
       />
 
+      {/* show any login error */}
       {error && <div className="alert alert-danger">{error}</div>}
 
       <button type="submit" className="btn btn-dark w-100 mb-4">
         Login
       </button>
 
+      {/* Google login button */}
       <div className="d-flex justify-content-center mb-4">
         <GoogleLogin
           onSuccess={handleGoogleSuccess}
@@ -80,6 +97,7 @@ function LoginForm() {
         />
       </div>
 
+      {/* signup redirect */}
       <p className="text-center text-light">
         New here?{" "}
         <span
