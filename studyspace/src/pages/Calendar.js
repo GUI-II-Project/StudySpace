@@ -1,17 +1,23 @@
 import React, { useEffect, useState, useRef } from "react";
-import { gapi } from "gapi-script";
 import NavBar from "../components/NavBar";
 import CalendarComponent from "../components/CalendarComponent";
 import "../css/calendar.css";
 import { database } from "../configuration.jsx";
-import { ref, set, onValue } from "firebase/database";
+import { ref, set, onValue, remove } from "firebase/database";
 import { useAuth } from "../context/AuthContext";
 
-function Calendar() {
-  const { user: currentUser } = useAuth();
-  const [events, setEvents] = useState([]);
+// filter out undefined values before saving
+function cleanData(obj) {
+  return Object.fromEntries(
+    Object.entries(obj).filter(([_, v]) => v !== undefined),
+  );
+}
 
-  const dialogRef = useRef(null);
+function Calendar() {
+  const { user: currentUser } = useAuth(); // get logged-in user
+  const [events, setEvents] = useState([]); // store firebase-only events
+
+  const dialogRef = useRef(null); // ref to dialog modal
   const [selDate, setSelDate] = useState("");
   const [title, setTitle] = useState("");
   const [startTime, setStartTime] = useState("09:00");
@@ -22,80 +28,24 @@ function Calendar() {
   const isTimeValid = startTime <= endTime;
   const isFormValid = title.trim() !== "" && isTimeValid;
 
-  const CLIENT_ID =
-    "42061456172-sj2edlc4ik9e0k5r8hrk6t8dsk8kqahg.apps.googleusercontent.com";
-  const API_KEY = "AIzaSyAVNUZbCqoIgHJIf6V420ugz_wKaQiPwl8";
-  const SCOPES = "https://www.googleapis.com/auth/calendar";
-  const DISC_DOCS =
-    "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest";
-
+  // load events from Firebase
   useEffect(() => {
-    if (!currentUser?.uid) return;
+    if (!currentUser) return;
 
-    gapi.load("client:auth2", () => {
-      gapi.client
-        .init({
-          apiKey: API_KEY,
-          clientId: CLIENT_ID,
-          discoveryDocs: [DISC_DOCS],
-          scope: SCOPES,
-        })
-        .then(() => {
-          const auth = gapi.auth2.getAuthInstance();
-          if (auth) {
-            if (!auth.isSignedIn.get()) {
-              auth.signIn().then(syncAllEvents);
-            } else {
-              syncAllEvents();
-            }
-
-            auth.isSignedIn.listen((signedIn) => {
-              if (signedIn) syncAllEvents();
-            });
-          }
-        })
-        .catch(console.error);
+    const eventsRef = ref(database, `calendarEvents/${currentUser.uid}`);
+    const unsubscribe = onValue(eventsRef, (snapshot) => {
+      const data = snapshot.val() || {};
+      const loadedEvents = Object.entries(data).map(([id, event]) => ({
+        id,
+        ...event,
+      }));
+      setEvents(loadedEvents);
     });
+
+    return () => unsubscribe();
   }, [currentUser]);
 
-  function syncAllEvents() {
-    if (!currentUser?.uid) return;
-
-    const fbRef = ref(database, `calendarEvents/${currentUser.uid}`);
-    onValue(fbRef, (snapshot) => {
-      const fbData = snapshot.val() || {};
-      const fbEvents = Object.values(fbData);
-
-      gapi.client.calendar.events
-        .list({
-          calendarId: "primary",
-          timeMin: new Date().toISOString(),
-          showDeleted: false,
-          singleEvents: true,
-          maxResults: 20,
-          orderBy: "startTime",
-        })
-        .then((res) => {
-          const googleEvents = (res.result.items || [])
-            .filter((e) => e.start?.dateTime)
-            .map((e) => ({
-              id: e.id,
-              title: e.summary,
-              start: e.start.dateTime,
-              end: e.end.dateTime,
-            }));
-
-          const uniqueMap = new Map();
-          [...fbEvents, ...googleEvents].forEach((ev) => {
-            if (!uniqueMap.has(ev.id)) uniqueMap.set(ev.id, ev);
-          });
-
-          setEvents(Array.from(uniqueMap.values()));
-        })
-        .catch(console.error);
-    });
-  }
-
+  // open dialog for new event
   function handleDateClick(arg) {
     setSelDate(arg.dateStr);
     setTitle("");
@@ -106,10 +56,10 @@ function Calendar() {
     dialogRef.current.showModal();
   }
 
+  // open dialog pre-filled for editing
   function handleEditClick(event) {
     const start = new Date(event.start);
     const end = new Date(event.end);
-
     setSelDate(start.toISOString().split("T")[0]);
     setTitle(event.title);
     setStartTime(start.toTimeString().slice(0, 5));
@@ -119,69 +69,42 @@ function Calendar() {
     dialogRef.current.showModal();
   }
 
+  // delete event from firebase
   function handleDeleteClick(id) {
-    if (!currentUser?.uid) return;
-
-    gapi.client.calendar.events
-      .delete({ calendarId: "primary", eventId: id })
-      .then(() => {
-        const path = `calendarEvents/${currentUser.uid}/${id}`;
-        set(ref(database, path), null);
-        setEvents((prev) => prev.filter((e) => e.id !== id));
-      })
-      .catch(console.error);
+    if (!currentUser) return;
+    const path = `calendarEvents/${currentUser.uid}/${id}`;
+    remove(ref(database, path));
+    setEvents((prev) => prev.filter((e) => e.id !== id));
   }
 
+  // create or update event
   function handleSubmit(e) {
     e.preventDefault();
+    if (!currentUser) return;
+
     const startDT = `${selDate}T${startTime}:00`;
     const endDT = `${selDate}T${endTime}:00`;
+    const eventId = editEventId || `event_${Date.now()}`;
 
-    const event = {
-      summary: title,
-      start: { dateTime: startDT, timeZone: "America/New_York" },
-      end: { dateTime: endDT, timeZone: "America/New_York" },
+    const eventData = {
+      id: eventId,
+      title,
+      start: startDT,
+      end: endDT,
     };
 
-    const request = editMode
-      ? gapi.client.calendar.events.update({
-          calendarId: "primary",
-          eventId: editEventId,
-          resource: event,
-        })
-      : gapi.client.calendar.events.insert({
-          calendarId: "primary",
-          resource: event,
-        });
-
-    request
-      .then((res) => {
-        const gEvent = res.result;
-        const updatedEvent = {
-          id: gEvent.id,
-          title: gEvent.summary,
-          start: gEvent.start.dateTime,
-          end: gEvent.end.dateTime,
-        };
-
-        if (currentUser?.uid) {
-          const path = `calendarEvents/${currentUser.uid}/${gEvent.id}`;
-          set(ref(database, path), updatedEvent);
-        }
-
-        setEvents((prev) => {
-          const withoutOld = prev.filter((e) => e.id !== gEvent.id);
-          return [...withoutOld, updatedEvent];
-        });
-
+    const path = `calendarEvents/${currentUser.uid}/${eventId}`;
+    set(ref(database, path), cleanData(eventData))
+      .then(() => {
+        const updated = editMode
+          ? events.map((e) => (e.id === eventId ? eventData : e))
+          : [...events, eventData];
+        setEvents(updated);
         dialogRef.current.close();
         setEditMode(false);
         setEditEventId(null);
       })
-      .catch((err) => {
-        console.error("Event save failed", err);
-        dialogRef.current.close();
-      });
+      .catch(console.error);
   }
 
   return (
@@ -203,6 +126,7 @@ function Calendar() {
         </div>
       </div>
 
+      {/* event form dialog */}
       <dialog ref={dialogRef} className="event-dialog">
         <form onSubmit={handleSubmit}>
           <h3>
@@ -218,7 +142,7 @@ function Calendar() {
             />
           </label>
           {title.trim() === "" && (
-            <p style={{ color: "#f87171" }}>Title is required.</p>
+            <p style={{ color: "#f87171" }}>title is required</p>
           )}
           <label>
             Start
@@ -238,20 +162,21 @@ function Calendar() {
           </label>
           {!isTimeValid && (
             <p style={{ color: "#f87171" }}>
-              End time must be after start time.
+              end time must be after start time
             </p>
           )}
           <menu>
             <button type="submit" disabled={!isFormValid}>
-              {editMode ? "Update" : "Add"} Event
+              {editMode ? "update" : "add"} event
             </button>
             <button type="button" onClick={() => dialogRef.current.close()}>
-              Cancel
+              cancel
             </button>
           </menu>
         </form>
       </dialog>
 
+      {/* upcoming events list */}
       <div
         className="text-center"
         style={{ marginTop: "35px", paddingBottom: "35px" }}
@@ -270,18 +195,18 @@ function Calendar() {
                   onClick={() => handleEditClick(event)}
                   style={{ marginLeft: "8px" }}
                 >
-                  Edit
+                  edit
                 </button>
                 <button
                   onClick={() => handleDeleteClick(event.id)}
                   style={{ marginLeft: "4px", color: "red" }}
                 >
-                  Delete
+                  delete
                 </button>
               </li>
             ))
           ) : (
-            <p>No events found.</p>
+            <p>no events found</p>
           )}
         </ul>
       </div>
