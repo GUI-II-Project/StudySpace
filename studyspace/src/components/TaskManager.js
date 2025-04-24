@@ -1,78 +1,105 @@
 import React, { useState, useEffect, useRef } from "react";
 import TaskList from "./TaskList.js";
 import { database } from "../configuration.jsx";
-import { ref, set, onValue } from "firebase/database";
+import { ref, set, onValue, off } from "firebase/database";
+import { useAuth } from "../context/AuthContext";
 
 function TaskManager({ compact }) {
-  // State to manage the list of tasks
   const [tasks, setTasks] = useState([]);
+  const { user: currentUser } = useAuth();
+  const hasInitialized = useRef(false);
+  const skipNextSave = useRef(true); // avoid saving right after loading
 
-  // Only save changes after initial load
-  const hasLoaded = useRef(false);
-
-  // Load tasks from Firebase when the component mounts
+  // load tasks from firebase on user change
   useEffect(() => {
-    const tasksRef = ref(database, "tasks");
-    onValue(tasksRef, (snapshot) => {
-      const data = snapshot.val();
-      if (data) {
-        setTasks(data);
-      }
-      hasLoaded.current = true;
+    if (!currentUser?.uid) return;
+
+    const tasksRef = ref(database, `tasks/${currentUser.uid}`);
+
+    const unsubscribe = onValue(tasksRef, (snapshot) => {
+      const data = snapshot.val() || {};
+      const loadedTasks = Object.entries(data).map(([id, task]) => ({
+        id,
+        ...task,
+      }));
+      setTasks(loadedTasks);
+      hasInitialized.current = true;
+      skipNextSave.current = true; // skip first auto-save
     });
-  }, []);
 
-  // Save tasks to Firebase whenever they change, but not on initial load
+    return () => {
+      off(tasksRef);
+      hasInitialized.current = false;
+    };
+  }, [currentUser]);
+
+  // auto-save tasks to firebase after any change
   useEffect(() => {
-    if (hasLoaded.current) {
-      const tasksRef = ref(database, "tasks");
-      set(tasksRef, tasks);
+    if (!currentUser?.uid || !hasInitialized.current || skipNextSave.current) {
+      skipNextSave.current = false;
+      return;
     }
-  }, [tasks]);
 
-  // Add a new task to the task array, with status uncompleted and no deadline
-  const addTask = (newTaskDescription) => {
+    const taskObj = {};
+    tasks.forEach((task) => {
+      taskObj[task.id] = {
+        description: task.description || "",
+        completed: !!task.completed,
+        deadline: task.deadline || "",
+      };
+    });
+
+    const tasksRef = ref(database, `tasks/${currentUser.uid}`);
+    set(tasksRef, taskObj).catch(console.error);
+  }, [tasks, currentUser]);
+
+  // utility to create a unique id
+  const createTaskId = () => `t${Date.now()}`;
+
+  // task action handlers
+  const addTask = (description) => {
     const newTask = {
-      description: newTaskDescription,
+      id: createTaskId(),
+      description,
       completed: false,
       deadline: "",
     };
-    const updatedTasks = [...tasks, newTask];
-    setTasks(updatedTasks);
+    setTasks((prev) => [...prev, newTask]);
   };
 
-  // Edit a task description at specific index
-  const editTask = (index, newTaskDescription) => {
-    const updatedTasks = [...tasks];
-    updatedTasks[index] = { ...tasks[index], description: newTaskDescription };
-    setTasks(updatedTasks);
+  const editTask = (index, newDescription) => {
+    setTasks((prev) => {
+      const updated = [...prev];
+      updated[index] = { ...updated[index], description: newDescription };
+      return updated;
+    });
   };
 
-  // Delete a task a specific index
   const deleteTask = (index) => {
-    setTasks(tasks.filter((_, i) => i !== index));
+    setTasks((prev) => prev.filter((_, i) => i !== index));
   };
 
-  // Add or update a deadline for a task
-  const addDeadline = (index, taskDeadline) => {
-    const updatedTasks = [...tasks];
-    updatedTasks[index] = { ...updatedTasks[index], deadline: taskDeadline };
-    setTasks(updatedTasks);
+  const addDeadline = (index, deadline) => {
+    setTasks((prev) => {
+      const updated = [...prev];
+      updated[index] = { ...updated[index], deadline };
+      return updated;
+    });
   };
 
-  // Toggle checkbox status
   const checkTask = (index) => {
-    const updatedTasks = [...tasks];
-    updatedTasks[index] = {
-      ...updatedTasks[index],
-      completed: !updatedTasks[index].completed,
-    };
-    setTasks(updatedTasks);
+    setTasks((prev) => {
+      const updated = [...prev];
+      updated[index] = {
+        ...updated[index],
+        completed: !updated[index].completed,
+      };
+      return updated;
+    });
   };
 
-  // Reorder tasks after drag-and-drop
-  const reorderTasks = (updatedTasks) => {
-    setTasks(updatedTasks);
+  const reorderTasks = (newOrder) => {
+    setTasks(newOrder);
   };
 
   return (
