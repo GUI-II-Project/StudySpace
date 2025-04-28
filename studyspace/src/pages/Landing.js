@@ -46,7 +46,6 @@ function LandingPage() {
         </h5>
       </div>
 
-      {/* main image centered */}
       <div
         style={{ marginTop: "2rem", display: "flex", justifyContent: "center" }}
       >
@@ -63,7 +62,7 @@ function LandingPage() {
         style={{ marginTop: "8rem", marginLeft: "8rem", marginRight: "8rem" }}
         className="row justify-content-left"
       >
-        <div className="col-6 text-start">
+        <div className="col-sm-12 col-lg-6 text-start">
           <h4 style={{ paddingBottom: "5px", fontWeight: "bold" }}>
             Getting into flow state is hard.
           </h4>
@@ -87,9 +86,9 @@ function LandingPage() {
             Study Space solves this problem.
           </p>
         </div>
-        <div className="col-6">
+        <div className="col-sm-12 col-lg-6">
           <img
-            style={{ maxHeight: "350px", paddingLeft: "5rem" }}
+            style={{ maxHeight: "350px", paddingLeft: "5rem", paddingTop: "2rem" }}
             className="img-fluid"
             src={logo_with_clouds}
             alt="logo_with_clouds"
@@ -98,10 +97,10 @@ function LandingPage() {
       </div>
 
       <div
-        style={{ marginTop: "7rem", marginLeft: "8rem" }}
+        style={{ marginTop: "7rem", marginLeft: "8rem", marginRight: "8rem" }}
         className="row justify-content-left"
       >
-        <div className="col-5 text-start">
+        <div className="text-start">
           <h4 style={{ paddingBottom: "5px", fontWeight: "bold" }}>
             No more scattered tools. No more wasted time.
           </h4>
@@ -109,7 +108,6 @@ function LandingPage() {
             Just one platform to help you stay organized and focused.
           </h5>
         </div>
-        <div className="col-5"></div>
       </div>
 
       <div
@@ -122,40 +120,40 @@ function LandingPage() {
         }}
         className="row justify-content-left text-start row-gap-4"
       >
-        <div className="col-4">
+        <div className="col-12 col-sm-6 col-lg-4">
           <h5 style={{ fontWeight: "bold" }}>✏️ Take notes</h5>
           <p style={{ paddingTop: "5px" }}>
             Jot down and save your greatest ideas and thoughts in the notes tab.
           </p>
         </div>
-        <div className="col-4">
+        <div className="col-12 col-sm-6 col-lg-4">
           <h5 style={{ fontWeight: "bold" }}>🗓️ Plan what&apos;s next</h5>
           <p style={{ paddingTop: "5px" }}>
             Access an integrated calendar to add events and see what&apos;s
             coming next.
           </p>
         </div>
-        <div className="col-4">
+        <div className="col-12 col-sm-6 col-lg-4">
           <h5 style={{ fontWeight: "bold" }}>⏳ Stay focused</h5>
           <p style={{ paddingTop: "5px" }}>
             Enhance your productivity and time box your tasks with a Pomodoro
             timer.
           </p>
         </div>
-        <div className="col-4">
+        <div className="col-12 col-sm-6 col-lg-4">
           <h5 style={{ fontWeight: "bold" }}>🎵 Feel the vibes</h5>
           <p style={{ paddingTop: "5px" }}>
             Set the mood with the music player and turn up that lofi.
           </p>
         </div>
-        <div className="col-4">
+        <div className="col-12 col-sm-6 col-lg-4">
           <h5 style={{ fontWeight: "bold" }}>💡 Set the tasks</h5>
           <p style={{ paddingTop: "5px" }}>
             Keep track of deadlines and what you need to do with a handy task
             list.
           </p>
         </div>
-        <div className="col-4">
+        <div className="col-12 col-sm-6 col-lg-4">
           <h5 style={{ fontWeight: "bold" }}>✨ Get inspired</h5>
           <p style={{ paddingTop: "5px" }}>
             Find some motivation with daily quotes to keep the flow going.
