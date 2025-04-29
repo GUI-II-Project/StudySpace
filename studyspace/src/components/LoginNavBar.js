@@ -15,7 +15,11 @@ class LoginNavBar extends React.Component {
             </a>
             <ul class="navbar-nav">
               <li class="nav-item active">
-                <a class="nav-link" href="/" style={{ color: "white", cursor: "pointer" }}>
+                <a
+                  class="nav-link"
+                  href="/"
+                  style={{ color: "white", cursor: "pointer" }}
+                >
                   Return Home
                 </a>
               </li>

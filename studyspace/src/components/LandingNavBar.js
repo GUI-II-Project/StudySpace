@@ -20,7 +20,11 @@ class LandingNavBar extends React.Component {
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#features" style={{ cursor: "pointer" }}>
+                <a
+                  class="nav-link"
+                  href="#features"
+                  style={{ cursor: "pointer" }}
+                >
                   Features
                 </a>
               </li>

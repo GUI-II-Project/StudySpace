@@ -22,12 +22,26 @@ function LandingPage() {
       <LandingNavBar />
 
       <div style={{ marginTop: "4rem", textAlign: "center" }}>
-        <h1 style={{ paddingBottom: "1rem", fontSize: "4rem", fontWeight: "bold" }}>
+        <h1
+          style={{
+            paddingBottom: "1rem",
+            fontSize: "4rem",
+            fontWeight: "bold",
+          }}
+        >
           Study Space
         </h1>
-        <h4 style={{ paddingBottom: "2rem", fontSize: "2rem", textDecoration: "underline", 
-          textDecorationColor: "#F4C425", textDecorationThickness: "0.5rem", textUnderlineOffset: "0.6rem" }}>
-            Get into flow state.
+        <h4
+          style={{
+            paddingBottom: "2rem",
+            fontSize: "2rem",
+            textDecoration: "underline",
+            textDecorationColor: "#F4C425",
+            textDecorationThickness: "0.5rem",
+            textUnderlineOffset: "0.6rem",
+          }}
+        >
+          Get into flow state.
         </h4>
         <button
           type="button"
@@ -42,7 +56,13 @@ function LandingPage() {
       </div>
 
       <div
-        style={{ marginTop: "2rem", display: "flex", justifyContent: "center", marginLeft: "8rem", marginRight: "8rem" }}
+        style={{
+          marginTop: "2rem",
+          display: "flex",
+          justifyContent: "center",
+          marginLeft: "8rem",
+          marginRight: "8rem",
+        }}
       >
         <img
           style={{ maxHeight: "500px", width: "100%", maxWidth: "900px" }}
@@ -58,8 +78,16 @@ function LandingPage() {
         className="row justify-content-left"
       >
         <div className="col-sm-12 col-lg-6 text-start">
-          <h4 style={{ paddingBottom: "1rem", fontWeight: "bold", textDecoration: "underline", 
-          textDecorationColor: "#F4C425", textDecorationThickness: "0.2rem", textUnderlineOffset: "0.6rem" }}>
+          <h4
+            style={{
+              paddingBottom: "1rem",
+              fontWeight: "bold",
+              textDecoration: "underline",
+              textDecorationColor: "#F4C425",
+              textDecorationThickness: "0.2rem",
+              textUnderlineOffset: "0.6rem",
+            }}
+          >
             Getting into flow state is hard.
           </h4>
           <h5 className="text-muted" style={{ paddingBottom: "5px" }}>
@@ -84,7 +112,11 @@ function LandingPage() {
         </div>
         <div className="col-sm-12 col-lg-6">
           <img
-            style={{ maxHeight: "350px", paddingLeft: "5rem", paddingTop: "2rem" }}
+            style={{
+              maxHeight: "350px",
+              paddingLeft: "5rem",
+              paddingTop: "2rem",
+            }}
             className="img-fluid"
             src={logo_with_clouds}
             alt="logo_with_clouds"
@@ -97,8 +129,16 @@ function LandingPage() {
         className="row justify-content-left"
       >
         <div className="text-start">
-          <h4 style={{ paddingBottom: "1rem", fontWeight: "bold", textDecoration: "underline", 
-          textDecorationColor: "#F4C425", textDecorationThickness: "0.2rem", textUnderlineOffset: "0.6rem" }}>
+          <h4
+            style={{
+              paddingBottom: "1rem",
+              fontWeight: "bold",
+              textDecoration: "underline",
+              textDecorationColor: "#F4C425",
+              textDecorationThickness: "0.2rem",
+              textUnderlineOffset: "0.6rem",
+            }}
+          >
             No more scattered tools. No more wasted time.
           </h4>
           <h5 className="text-muted">

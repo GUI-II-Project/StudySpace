@@ -27,17 +27,29 @@ function NavBar() {
       </Link>
       <ul className="navbar-nav" style={{ width: "100%" }}>
         <li className="nav-item main-nav-item">
-          <Link className="nav-link text-white" to="/notes" style={{ cursor: "pointer" }}>
+          <Link
+            className="nav-link text-white"
+            to="/notes"
+            style={{ cursor: "pointer" }}
+          >
             Notes
           </Link>
         </li>
         <li className="nav-item main-nav-item">
-          <Link className="nav-link text-white" to="/calendar" style={{ cursor: "pointer" }}>
+          <Link
+            className="nav-link text-white"
+            to="/calendar"
+            style={{ cursor: "pointer" }}
+          >
             Calendar
           </Link>
         </li>
         <li className="nav-item main-nav-item">
-          <Link className="nav-link text-white" to="/tasks" style={{ cursor: "pointer" }}>
+          <Link
+            className="nav-link text-white"
+            to="/tasks"
+            style={{ cursor: "pointer" }}
+          >
             Tasks
           </Link>
         </li>
