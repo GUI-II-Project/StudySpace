@@ -10,12 +10,12 @@ class LoginNavBar extends React.Component {
             class="container-fluid"
             style={{ marginLeft: "1rem", marginRight: "1rem" }}
           >
-            <a class="navbar-brand" href="/">
+            <a class="navbar-brand" href="/" style={{ cursor: "pointer" }}>
               <img src={logo} alt="logo" width="30" height="30" />
             </a>
             <ul class="navbar-nav">
               <li class="nav-item active">
-                <a class="nav-link" href="/" style={{ color: "white" }}>
+                <a class="nav-link" href="/" style={{ color: "white", cursor: "pointer" }}>
                   Return Home
                 </a>
               </li>

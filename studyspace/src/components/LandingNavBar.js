@@ -10,17 +10,17 @@ class LandingNavBar extends React.Component {
             class="container-fluid"
             style={{ marginLeft: "1rem", marginRight: "1rem" }}
           >
-            <a class="navbar-brand" href="/">
+            <a class="navbar-brand" href="/" style={{ cursor: "pointer" }}>
               <img src={logo} alt="logo" width="30" height="30" />
             </a>
             <ul class="navbar-nav">
               <li class="nav-item active">
-                <a class="nav-link" href="#about">
+                <a class="nav-link" href="#about" style={{ cursor: "pointer" }}>
                   About
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#features">
+                <a class="nav-link" href="#features" style={{ cursor: "pointer" }}>
                   Features
                 </a>
               </li>
