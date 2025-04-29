@@ -22,22 +22,34 @@ function NavBar() {
         backgroundColor: "#0D173290",
       }}
     >
-      <Link className="navbar-brand" to="/home">
+      <Link className="navbar-brand" to="/home" style={{ cursor: "pointer" }}>
         <img src={logo} alt="logo" width="40px" height="40px" />
       </Link>
       <ul className="navbar-nav" style={{ width: "100%" }}>
         <li className="nav-item main-nav-item">
-          <Link className="nav-link text-white" to="/notes">
+          <Link
+            className="nav-link text-white"
+            to="/notes"
+            style={{ cursor: "pointer" }}
+          >
             Notes
           </Link>
         </li>
         <li className="nav-item main-nav-item">
-          <Link className="nav-link text-white" to="/calendar">
+          <Link
+            className="nav-link text-white"
+            to="/calendar"
+            style={{ cursor: "pointer" }}
+          >
             Calendar
           </Link>
         </li>
         <li className="nav-item main-nav-item">
-          <Link className="nav-link text-white" to="/tasks">
+          <Link
+            className="nav-link text-white"
+            to="/tasks"
+            style={{ cursor: "pointer" }}
+          >
             Tasks
           </Link>
         </li>
