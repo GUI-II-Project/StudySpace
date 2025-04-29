@@ -1,6 +1,7 @@
 import "../css/TaskList.css";
 import React, { useState } from "react";
 import { FaRegTrashAlt } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 // receiving properties from TaskListPage
 function TaskList(props) {
@@ -115,7 +116,14 @@ function TaskList(props) {
       <div className="task-list-header">
         {" "}
         {/* Header with title and date (change this to make display the current date) */}
-        <h2>Tasks</h2>
+        <h2>
+          <Link
+            to="/tasks"
+            style={{ cursor: "pointer" }}
+          >
+            Tasks
+          </Link>
+        </h2>
         {/* getting and displaying the current date */}
         <span>
           {new Date().toLocaleDateString(undefined, {
@@ -131,7 +139,7 @@ function TaskList(props) {
         {/* <span className="add-task-icon">+</span> plus icon styling */}
         <input
           type="text"
-          placeholder="Add task"
+          placeholder="Add a task..."
           value={newTask}
           onChange={handleInputChange} /* for changing tasks */
           onKeyPress={handleKeyPress}
