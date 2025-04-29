@@ -127,9 +127,8 @@ function TaskList(props) {
       </div>
 
       <div className="add-task">
-        {" "}
         {/* New task input section */}
-        <span className="add-task-icon">+</span> {/* plus icon styling */}
+        {/* <span className="add-task-icon">+</span> plus icon styling */}
         <input
           type="text"
           placeholder="Add task"
@@ -137,9 +136,8 @@ function TaskList(props) {
           onChange={handleInputChange} /* for changing tasks */
           onKeyPress={handleKeyPress}
         />
-        <button className="add-task-button" onClick={addTask}>
-          🡆
-          {/* ↵ 🡺 🡆 ➤ ➔ */}
+        <button className="add-task-icon add-task-button" onClick={addTask}>
+          +
         </button>
       </div>
 
@@ -219,7 +217,7 @@ function TaskList(props) {
                   document.getElementById(`date-picker-${index}`).showPicker()
                 }
               >
-                {task.deadline || "+Add deadline"}
+                {task.deadline || "+ Add deadline"}
               </span>
 
               {/* Hidden date input to trigger native picker */}
